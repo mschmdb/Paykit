@@ -1,10 +1,12 @@
 import { paraglide } from '@inlang/paraglide-sveltekit/vite';
 import { defineConfig } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
+import { enhancedImages } from '@sveltejs/enhanced-img';
 
 export default defineConfig({
 	plugins: [
 		sveltekit(),
+		enhancedImages(),
 		paraglide({
 			project: './project.inlang',
 			outdir: './src/lib/paraglide'
