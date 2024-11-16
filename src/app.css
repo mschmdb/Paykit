@@ -1,3 +1,89 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: oklch(97.82% 0.006 95.94);  /* eggshell white */
+    --foreground: oklch(23.85% 0.026 264.05);
+    --muted: oklch(93.55% 0.01 95.94);
+    --muted-foreground: oklch(51.64% 0.015 264.05);
+    --popover: oklch(97.82% 0.006 95.94);
+    --popover-foreground: oklch(23.85% 0.026 264.05);
+    --card: oklch(97.82% 0.006 95.94);
+    --card-foreground: oklch(23.85% 0.026 264.05);
+    --border: oklch(88.92% 0.007 95.94);
+    --input: oklch(88.92% 0.007 95.94);
+    --primary: oklch(23.85% 0.026 264.05);
+    --primary-foreground: oklch(97.82% 0.006 95.94);
+    --secondary: oklch(93.55% 0.01 95.94);
+    --secondary-foreground: oklch(23.85% 0.026 264.05);
+    --accent: oklch(93.55% 0.01 95.94);
+    --accent-foreground: oklch(23.85% 0.026 264.05);
+    --destructive: oklch(63.77% 0.195 25.76);
+    --destructive-foreground: oklch(97.82% 0.006 95.94);
+    --ring: oklch(23.85% 0.026 264.05);
+    --radius: 0.5rem;
+    --sidebar-background: oklch(97.82% 0.006 95.94);
+    --sidebar-foreground: oklch(33.64% 0.018 264.05);
+    --sidebar-primary: oklch(23.85% 0.026 264.05);
+    --sidebar-primary-foreground: oklch(97.82% 0.006 95.94);
+    --sidebar-accent: oklch(93.55% 0.01 95.94);
+    --sidebar-accent-foreground: oklch(23.85% 0.026 264.05);
+    --sidebar-border: oklch(88.92% 0.007 95.94);
+    --sidebar-ring: oklch(66.86% 0.173 264.05);
+  }
+
+  .dark {
+    --background: oklch(26.18% 0.016 264.05);  /* dark grey */
+    --foreground: oklch(97.82% 0.006 95.94);
+    --muted: oklch(30.45% 0.018 264.05);
+    --muted-foreground: oklch(70.09% 0.009 264.05);
+    --popover: oklch(26.18% 0.016 264.05);
+    --popover-foreground: oklch(97.82% 0.006 95.94);
+    --card: oklch(26.18% 0.016 264.05);
+    --card-foreground: oklch(97.82% 0.006 95.94);
+    --border: oklch(30.45% 0.018 264.05);
+    --input: oklch(30.45% 0.018 264.05);
+    --primary: oklch(97.82% 0.006 95.94);
+    --primary-foreground: oklch(23.85% 0.026 264.05);
+    --secondary: oklch(30.45% 0.018 264.05);
+    --secondary-foreground: oklch(97.82% 0.006 95.94);
+    --accent: oklch(30.45% 0.018 264.05);
+    --accent-foreground: oklch(97.82% 0.006 95.94);
+    --destructive: oklch(40.14% 0.123 25.76);
+    --destructive-foreground: oklch(97.82% 0.006 95.94);
+    --ring: oklch(84.73% 0.008 264.05);
+    --sidebar-background: oklch(23.85% 0.026 264.05);
+    --sidebar-foreground: oklch(93.55% 0.01 95.94);
+    --sidebar-primary: oklch(66.86% 0.173 264.05);
+    --sidebar-primary-foreground: oklch(100% 0 0);
+    --sidebar-accent: oklch(28.18% 0.016 264.05);
+    --sidebar-accent-foreground: oklch(93.55% 0.01 95.94);
+    --sidebar-border: oklch(28.18% 0.016 264.05);
+    --sidebar-ring: oklch(66.86% 0.173 264.05);
+  }
+}
+
+@layer base {
+  @font-face {
+    font-family: 'Marlboro';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(/fonts/marlboro.woff) format('woff');
+  }
+  @font-face {
+    font-family: 'CooperHewitt';
+    font-style: normal;
+    font-weight: 800;
+    font-display: swap;
+    src: url(/fonts/cooper.woff2) format('woff2');
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
