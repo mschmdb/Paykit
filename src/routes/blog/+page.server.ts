@@ -1,17 +1,11 @@
 // src/routes/blog/+page.server.ts
 
-import { createContext } from '$lib/trpc/context';
-import { createCaller } from '$lib/trpc/router';
-import type { PageServerLoad } from './$types';
+import type { ServerLoad } from '@sveltejs/kit';
+import { loadPosts } from '$lib/utils/page-loader';
+import {withISR} from '$lib/utils/with-isr';
 
-export const load: PageServerLoad = async (event) => {
-  const caller = createCaller(await createContext(event));
+const pageLoad: ServerLoad = loadPosts;
 
-  try {
-    const posts = await caller.loadPosts();
-    return { posts };
-  } catch (e) {
-    console.error('Error fetching blog posts:', e);
-    return { posts: { docs: [] } };
-  }
-};
+const { load, config } = withISR(pageLoad);
+
+export { load, config };

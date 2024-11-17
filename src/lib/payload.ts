@@ -1,5 +1,5 @@
-import { PAYLOAD_URI, PRIVATE_PAYLOAD_API_KEY } from "$env/static/private";
-console.log(`PAYLOAD_URI: ${PAYLOAD_URI}`);
+import { PAYLOAD_URI } from "$env/static/private";
+
 export async function fetchFromPayload(endpoint: string, params: Record<string, string> = {}) {
   const searchParams = new URLSearchParams({
     depth: '1',

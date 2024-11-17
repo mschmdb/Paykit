@@ -6,7 +6,24 @@
 	import { toggleMode } from 'mode-watcher';
 	import { Button } from '$lib/components/ui/button/index.js';
 
-	let { pages } = $props<{ pages: Array<{ title: string; slug: string }> }>();
+	interface NavItem {
+		id: string;
+		link: {
+			type: string;
+			newTab: boolean | null;
+			reference?: {
+				relationTo: string;
+				value: {
+					slug: string;
+				};
+			};
+			url: string | null;
+			label: string;
+		};
+	}
+
+	let { header } = $props<{ header: { navItems: NavItem[] } }>();
+	$inspect('header', header);
 
 	let isOpen = $state(false);
 	let isLargeScreen = $state(false);
@@ -17,6 +34,13 @@
 
 	function closeMenu() {
 		isOpen = false;
+	}
+
+	function getHref(item: NavItem): string {
+		if (item.link.type === 'reference' && item.link.reference) {
+			return `/${item.link.reference.value.slug}`;
+		}
+		return item.link.url || '#';
 	}
 
 	onMount(() => {
@@ -43,27 +67,16 @@
 				<a href="/" class="font-['CooperHewitt'] text-4xl leading-none text-marlboro">AFAIK.FYI</a>
 			</div>
 			<div class="hidden items-center space-x-4 sm:flex">
-				<!-- {#each pages as page}
+				{#each header.navItems as item (item.id)}
 					<a
-						href="/{page.slug}"
+						href={getHref(item)}
 						class="text-sm text-muted-foreground transition-colors hover:text-foreground"
-						aria-current={page.slug === '' ? 'page' : undefined}
+						target={item.link.newTab ? "_blank" : undefined}
+						rel={item.link.newTab ? "noopener noreferrer" : undefined}
 					>
-						{page.title}
+						{item.link.label}
 					</a>
-				{/each} -->
-        <a
-					href="/"
-					class="text-sm text-muted-foreground transition-colors hover:text-foreground"
-				>
-					Home
-				</a>
-				<a
-					href="/blog"
-					class="text-sm text-muted-foreground transition-colors hover:text-foreground"
-				>
-					Blog
-				</a>
+				{/each}
 				<Button onclick={toggleMode} variant="outline" size="icon">
 					<Sun
 						class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
@@ -97,29 +110,17 @@
 			transition:slide
 		>
 			<div class="space-y-1 px-4 py-4">
-				<!-- {#each pages as page}
+				{#each header.navItems as item (item.id)}
 					<a
-						href="/{page.slug}"
+						href={getHref(item)}
 						class="block py-2 text-base text-muted-foreground hover:text-foreground"
-						aria-current={page.slug === '' ? 'page' : undefined}
+						target={item.link.newTab ? "_blank" : undefined}
+						rel={item.link.newTab ? "noopener noreferrer" : undefined}
 						onclick={closeMenu}
 					>
-						{page.title}
+						{item.link.label}
 					</a>
-				{/each} -->
-        <a
-					href="/"
-					class="text-sm text-muted-foreground transition-colors hover:text-foreground"
-				>
-					Home
-				</a>
-				<a
-					href="/blog"
-					class="block py-2 text-base text-muted-foreground hover:text-foreground"
-					onclick={closeMenu}
-				>
-					Blog
-				</a>
+				{/each}
 				<div class="py-2">
 					<Button onclick={toggleMode} variant="outline" size="icon">
 						<Sun

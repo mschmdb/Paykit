@@ -5,7 +5,8 @@ import { httpBatchLink } from '@trpc/client';
 let browserClient: ReturnType<typeof createTRPCClient<Router>>;
 
 export function trpc(init?: TRPCClientInit) {
-  const url = typeof window === 'undefined' ? `${init?.url}/api/trpc` : '/api/trpc';
+  const isBrowser = typeof window !== 'undefined';
+  const url = isBrowser ? '/api/trpc' : `${init?.url}/api/trpc`;
   
   const client = createTRPCClient<Router>({
     links: [
@@ -13,10 +14,9 @@ export function trpc(init?: TRPCClientInit) {
         url,
       }),
     ],
-    ...init,
   });
 
-  if (typeof window !== 'undefined' && !browserClient) {
+  if (isBrowser && !browserClient) {
     browserClient = client;
   }
 

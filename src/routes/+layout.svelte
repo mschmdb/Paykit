@@ -21,7 +21,7 @@
 <ModeWatcher />
 <ParaglideJS {i18n}>
 	<div class="flex min-h-screen flex-col">
-		<Navigation {pages} />
+		<Navigation header={data.header.header} />
 		{#key key}
 			<main class="flex-grow">
 				{@render children()}

@@ -1,11 +1,11 @@
-import { createContext } from '$lib/trpc/context';
-import { createCaller } from '$lib/trpc/router';
-import type { LayoutServerLoad } from './$types';
+import { loadPages } from '$lib/utils/page-loader';
+import { loadHeader } from '$lib/utils/page-loader';
 
-export const load: LayoutServerLoad = async (event) => {
-  const caller = createCaller(await createContext(event));
-
-  return {
-    pages: await caller.loadPages(),
-  };
+export const load = async (event) => {
+    const pages = await loadPages(event);
+    const header = await loadHeader(event);
+    return {
+        ...pages,
+        header
+    };
 };
