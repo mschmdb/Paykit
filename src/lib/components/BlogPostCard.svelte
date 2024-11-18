@@ -2,6 +2,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { formatDate } from '$lib/utils/date';
 	import { onMount } from 'svelte';
+	import * as m from '$lib/paraglide/messages.js';
 
 	let { post } = $props<{
 		slug: string;
@@ -42,31 +43,30 @@
 		excerpt = generateExcerpt(post.content);
 	});
 </script>
-
-<Card.Root class="border-[0.1px] border-border mb-8">
+<div class="py-2 border-t border-black dark:border-white">
+<Card.Root class="hover:bg-muted/50 transition-colors">
 	<a href="/blog/{post.slug}" class="block">
-		<Card.Header>
-			<div class="flex items-start gap-4">
-				<div class="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
-					<img
-						src={post.meta?.image?.url || '/placeholder.svg?height=40&width=40'}
-						alt={post.title}
-						class="h-full w-full object-cover"
-					/>
-				</div>
-				<div class="flex-grow">
-					<Card.Title class="mb-4">{post.title}</Card.Title>
-					<Card.Description>{excerpt}</Card.Description>
-				</div>
-			</div>
-		</Card.Header>
-		<Card.Content>
-			<div class="flex justify-between text-sm text-muted-foreground">
-				<span>Words by {post.populatedAuthors?.[0]?.name || 'Unknown'}</span>
-				<time datetime={post.publishedAt}>
+		<div class="grid grid-cols-1 md:grid-cols-[2fr,3fr,2fr] gap-6 p-6">
+			<div class="space-y-2">
+				<Card.Title class="text-xl font-semibold">{post.title}</Card.Title>
+				<time datetime={post.publishedAt} class="text-sm">
 					{post.publishedAt ? formatDate(post.publishedAt) : 'Date unknown'}
 				</time>
 			</div>
-		</Card.Content>
+			<div class="space-y-4">
+				<Card.Description class="text-base font-serif font-extralight text-black dark:text-white leading-relaxed">{excerpt}</Card.Description>
+				<div class="pt-2">
+					<span class="text-sm text-primary underline">{m.yummy_warm_cobra_mop()}</span>
+				</div>
+			</div>
+			<div class="aspect-[4/3] overflow-hidden grayscale">
+				<img
+					src={post.meta?.image?.url || '/placeholder.svg?height=300&width=400'}
+					alt={post.title}
+					class="h-full w-full object-cover"
+				/>
+			</div>
+		</div>
 	</a>
 </Card.Root>
+</div>

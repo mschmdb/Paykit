@@ -66,6 +66,7 @@
 		"@trpc/client": "^10.45.2",
 		"@trpc/server": "^10.45.2",
 		"delay": "^6.0.0",
+		"lucide-svelte": "^0.460.1",
 		"mode-watcher": "^0.4.1",
 		"node-cache": "^5.1.2",
 		"superjson": "^2.2.1",

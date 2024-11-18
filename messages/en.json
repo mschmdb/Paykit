@@ -1,5 +1,10 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"hello_world": "Hello, {name} from en!",
-	"round_tense_hare_nurture": "Welcome to SvelteKit"
+	"round_tense_hare_nurture": "Welcome to SvelteKit",
+	"fluffy_house_falcon_absorb": "No content available.",
+	"any_brave_halibut_strive": "Categories:",
+	"neat_caring_tadpole_coax": "Related Posts",
+	"next_long_niklas_kiss": "Toggle Bright / Dark",
+	"yummy_warm_cobra_mop": "Read more..."
 }

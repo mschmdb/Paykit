@@ -9,23 +9,23 @@
 
   const blogData = {
     id: 0,
-    title: "Journal",
+    title: "Blog",
     content: {
       root: {
         children: [
           {
             type: 'paragraph',
-            children: [{ text: 'Community experiences' }]
+            children: [{ text: 'Whatever you want here.' }]
           },
           {
             type: 'quote',
             children: [{ 
-              text: '"Minimalism is not a style, it is an attitude, a way of being. Its fundamental reaction against noise, visual noise, disorder, vulgarity. Minimalism is the pursuit of the essence of things, not the appearance."' 
+              text: '"This is some clever quote that will make you think about life and stuff. Maybe you will think about it for a while and then you will go on with your life. Or maybe you will think about it for a long time and it will change absolutely nothing. Who knows?"' 
             }]
           },
           {
             type: 'paragraph',
-            children: [{ text: '— Claudio Silvestrin' }]
+            children: [{ text: '— Matze Schmidbauer' }]
           }
         ]
       }

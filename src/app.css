@@ -3,108 +3,215 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 60 9% 98%;
-    --foreground: 240 20% 12%;
-    
-    --muted: 60 5% 94%;
-    --muted-foreground: 240 5% 50%;
-    
-    --popover: 60 9% 98%;
-    --popover-foreground: 240 20% 12%;
-    
-    --card: 60 9% 98%;
-    --card-foreground: 240 20% 12%;
-    
-    --border: 60 5% 90%;
-    --input: 60 5% 90%;
-    
-    --primary: 240 20% 12%;
-    --primary-foreground: 60 9% 98%;
-    
-    --secondary: 60 5% 94%;
-    --secondary-foreground: 240 20% 12%;
-    
-    --accent: 60 5% 94%;
-    --accent-foreground: 240 20% 12%;
-    
-    --destructive: 0 85% 60%;
-    --destructive-foreground: 60 9% 98%;
-    
-    --ring: 240 20% 12%;
-    
-    --radius: 0.5rem;
-    
-    --sidebar-background: 60 9% 98%;
-    --sidebar-foreground: 240 10% 30%;
-    --sidebar-primary: 240 20% 12%;
-    --sidebar-primary-foreground: 60 9% 98%;
-    --sidebar-accent: 60 5% 94%;
-    --sidebar-accent-foreground: 240 20% 12%;
-    --sidebar-border: 60 5% 90%;
-    --sidebar-ring: 240 40% 50%;
-  }
+	:root {
+		--background: 60 9% 98%;
+		--foreground: 240 20% 12%;
 
-  .dark {
-    --background: 240 10% 14%;
-    --foreground: 60 9% 98%;
-    
-    --muted: 240 8% 16%;
-    --muted-foreground: 240 5% 65%;
-    
-    --popover: 240 10% 14%;
-    --popover-foreground: 60 9% 98%;
-    
-    --card: 240 10% 14%;
-    --card-foreground: 60 9% 98%;
-    
-    --border: 216 6% 48%;
-    --input: 240 8% 16%;
-    
-    --primary: 60 9% 98%;
-    --primary-foreground: 240 20% 12%;
-    
-    --secondary: 240 8% 16%;
-    --secondary-foreground: 60 9% 98%;
-    
-    --accent: 240 8% 16%;
-    --accent-foreground: 60 9% 98%;
-    
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 60 9% 98%;
-    
-    --ring: 240 5% 84%;
-    
-    --sidebar-background: 240 20% 12%;
-    --sidebar-foreground: 60 5% 90%;
-    --sidebar-primary: 240 40% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 10% 15%;
-    --sidebar-accent-foreground: 60 5% 90%;
-    --sidebar-border: 240 10% 15%;
-    --sidebar-ring: 240 40% 50%;
-  }
+		--muted: 60 5% 94%;
+		--muted-foreground: 240 5% 50%;
+
+		--popover: 60 9% 98%;
+		--popover-foreground: 240 20% 12%;
+
+		--card: 60 9% 98%;
+		--card-foreground: 240 20% 12%;
+
+		--border: 60 5% 90%;
+		--input: 60 5% 90%;
+
+		--primary: 240 20% 12%;
+		--primary-foreground: 60 9% 98%;
+
+		--secondary: 60 5% 94%;
+		--secondary-foreground: 240 20% 12%;
+
+		--accent: 60 5% 94%;
+		--accent-foreground: 240 20% 12%;
+
+		--destructive: 0 85% 60%;
+		--destructive-foreground: 60 9% 98%;
+
+		--ring: 240 20% 12%;
+
+		--radius: 0.5rem;
+
+		--sidebar-background: 60 9% 98%;
+		--sidebar-foreground: 240 10% 30%;
+		--sidebar-primary: 240 20% 12%;
+		--sidebar-primary-foreground: 60 9% 98%;
+		--sidebar-accent: 60 5% 94%;
+		--sidebar-accent-foreground: 240 20% 12%;
+		--sidebar-border: 60 5% 90%;
+		--sidebar-ring: 240 40% 50%;
+	}
+
+	.dark {
+		--background: 240 10% 14%;
+		--foreground: 60 9% 98%;
+
+		--muted: 240 8% 16%;
+		--muted-foreground: 240 5% 65%;
+
+		--popover: 240 10% 14%;
+		--popover-foreground: 60 9% 98%;
+
+		--card: 240 10% 14%;
+		--card-foreground: 60 9% 98%;
+
+		--border: 216 6% 48%;
+		--input: 240 8% 16%;
+
+		--primary: 60 9% 98%;
+		--primary-foreground: 240 20% 12%;
+
+		--secondary: 240 8% 16%;
+		--secondary-foreground: 60 9% 98%;
+
+		--accent: 240 8% 16%;
+		--accent-foreground: 60 9% 98%;
+
+		--destructive: 0 62% 30%;
+		--destructive-foreground: 60 9% 98%;
+
+		--ring: 240 5% 84%;
+
+		--sidebar-background: 240 20% 12%;
+		--sidebar-foreground: 60 5% 90%;
+		--sidebar-primary: 240 40% 50%;
+		--sidebar-primary-foreground: 0 0% 100%;
+		--sidebar-accent: 240 10% 15%;
+		--sidebar-accent-foreground: 60 5% 90%;
+		--sidebar-border: 240 10% 15%;
+		--sidebar-ring: 240 40% 50%;
+	}
 }
 
 @layer base {
-  @font-face {
-    font-family: 'Marlboro';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url(/fonts/marlboro.woff) format('woff');
-  }
-  @font-face {
-    font-family: 'CooperHewitt';
-    font-style: normal;
-    font-weight: 800;
-    font-display: swap;
-    src: url(/fonts/cooper.woff2) format('woff2');
-  }
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+	@font-face {
+		font-family: 'IBM Plex Sans';
+		font-style: normal;
+		font-weight: 400;
+		font-display: swap;
+		src: url(/fonts/IBMPlexSansRegular.woff2) format('woff2');
+	}
+
+	@font-face {
+		font-family: 'IBM Plex Sans';
+		font-style: normal;
+		font-weight: 200;
+		font-display: swap;
+		src: url(/fonts/IBMPlexSansLight.woff2) format('woff2');
+	}
+
+	@font-face {
+		font-family: 'IBM Plex Sans';
+		font-style: normal;
+		font-weight: 600;
+		font-display: swap;
+		src: url(/fonts/IBMPlexSansSemiBold.woff2) format('woff2');
+	}
+
+	@font-face {
+		font-family: 'IBM Plex Sans';
+		font-style: normal;
+		font-weight: 800;
+		font-display: swap;
+		src: url(/fonts/IBMPlexSansBold.woff2) format('woff2');
+	}
+
+	@font-face {
+		font-family: 'IBM Plex Serif';
+		font-style: normal;
+		font-weight: 400;
+		font-display: swap;
+		src: url(/fonts/IBMPlexSerifRegular.woff2) format('woff2');
+	}
+
+	@font-face {
+		font-family: 'IBM Plex Serif';
+		font-style: normal;
+		font-weight: 200;
+		font-display: swap;
+		src: url(/fonts/IBMPlexSerifLight.woff2) format('woff2');
+	}
+
+	@font-face {
+		font-family: 'IBM Plex Serif';
+		font-style: normal;
+		font-weight: 100;
+		font-display: swap;
+		src: url(/fonts/IBMPlexSerifExtraLight.woff2) format('woff2');
+	}
+
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+}
+
+.bluesky-flutter {
+	display: inline-flex;
+	gap: 0.5em;
+	align-items: center;
+}
+
+.bluesky-flutter svg {
+	width: 2em;
+	height: 2em;
+	transition: 200ms;
+}
+
+.bluesky-flutter .left {
+	transform-origin: center;
+}
+.bluesky-flutter .right {
+	transform-origin: center;
+	transform: scale(-1, 1);
+}
+.bluesky-flutter:hover .left,
+.bluesky-flutter:focus .left {
+	animation: flutter 430ms ease-in-out;
+	--flip: 1;
+}
+.bluesky-flutter:hover .right,
+.bluesky-flutter:focus .right {
+	animation: flutter 500ms ease-in-out;
+	--flip: -1;
+}
+.bluesky-flutter:hover svg,
+.bluesky-flutter:focus svg {
+	transform: rotate(-5deg);
+	transition: 500ms;
+}
+
+@media (prefers-reduced-motion) {
+	.bluesky-flutter:hover .left,
+	.bluesky-flutter:focus .left,
+	.bluesky-flutter:hover .right,
+	.bluesky-flutter:focus .right {
+		animation: none;
+	}
+}
+
+@keyframes flutter {
+	10% {
+		transform: scale(calc(var(--flip) * 1), 0.9);
+	}
+	20% {
+		transform: scale(calc(var(--flip) * 0.5), 1);
+	}
+	40% {
+		transform: scale(calc(var(--flip) * 0.9), 0.95);
+	}
+	60% {
+		transform: scale(calc(var(--flip) * 0.3), 1);
+	}
+	80% {
+		transform: scale(calc(var(--flip) * 0.9), 0.95);
+	}
+	100% {
+		transform: scale(calc(var(--flip) * 1), 1);
+	}
 }

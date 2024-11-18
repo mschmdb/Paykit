@@ -17,8 +17,10 @@ const config: Config = {
 		},
 		extend: {
 			fontFamily: {
-				'serif': ['Marlboro', '...'],
+				
 				'mono': ['Cooper Hewitt', '...'],
+				'sans': ['IBM Plex Sans', 'sans-serif'],
+				'serif': ['IBM Plex Serif', 'serif'],
 			},
 
 			colors: {
@@ -73,9 +75,8 @@ const config: Config = {
 				md: "calc(var(--radius) - 2px)",
 				sm: "calc(var(--radius) - 4px)"
 			},
-			fontFamily: {
-				sans: [...fontFamily.sans]
-			},
+			
+			
 			keyframes: {
 				"accordion-down": {
 					from: { height: "0" },

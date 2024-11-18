@@ -32,6 +32,9 @@ importers:
       delay:
         specifier: ^6.0.0
         version: 6.0.0
+      lucide-svelte:
+        specifier: ^0.460.1
+        version: 0.460.1(svelte@5.2.0)
       mode-watcher:
         specifier: ^0.4.1
         version: 0.4.1(svelte@5.2.0)
@@ -3436,6 +3439,11 @@ packages:
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
+
+  lucide-svelte@0.460.1:
+    resolution: {integrity: sha512-guJjJSeWlKivsEG51Xg41egunBMJcobhDmkLv/NYTXmXyCEwxMf1A+HX7RvDEKiXbXYgtLImih67tI08MSUOkA==}
+    peerDependencies:
+      svelte: ^3 || ^4 || ^5.0.0-next.42
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -8518,6 +8526,10 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
+
+  lucide-svelte@0.460.1(svelte@5.2.0):
+    dependencies:
+      svelte: 5.2.0
 
   lz-string@1.5.0: {}
 

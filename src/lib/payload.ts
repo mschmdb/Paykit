@@ -1,9 +1,11 @@
 import { PAYLOAD_URI } from "$env/static/private";
+import { languageTag } from '$lib/paraglide/runtime';
 
 export async function fetchFromPayload(endpoint: string, params: Record<string, string> = {}) {
   const searchParams = new URLSearchParams({
     depth: '1',
     draft: 'false',
+    locale: languageTag(),
     ...params
   });
   

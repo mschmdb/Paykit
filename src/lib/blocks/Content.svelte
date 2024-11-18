@@ -72,39 +72,41 @@
         const text = node.children
           .map((child: any) => child.text)
           .join('');
-        return `<p class="mb-2">${text}</p>`;
+        return `<p class="mb-2 font-serif font-extralight text-black dark:text-white text-pretty">${text}</p>`;
       } else if (node.type === 'heading') {
         const text = node.children
           .map((child: any) => child.text)
           .join('');
         const tag = node.tag || 'h2'; // Default to h2 if tag is not specified
-        return `<${tag} class="text-2xl font-bold mb-4">${text}</${tag}>`;
+        return `<${tag} class="text-2xl font-sans font-bold mb-4">${text}</${tag}>`;
       }
       return '';
     }).join('');
   }
 </script>
 
-<div class="container mx-auto px-4">
-  <div class="flex flex-wrap -mx-2">
+<div class="mx-auto">
+  <div class="flex flex-wrap -mx-4 -my-4">
     {#each block.columns as column (column.id)}
-      <div class={`${sizeToClass[column.size]} px-2 mb-2`}>
-        {#if column.richText}
-          <div class="prose max-w-none">
-            {@html renderRichText(column.richText)}
-          </div>
-        {/if}
-        
-        {#if column.enableLink && column.link?.url}
-          <a 
-            href={column.link.url}
-            class="inline-block mt-4 text-primary hover:underline"
-            target={column.link.newTab ? "_blank" : undefined}
-            rel={column.link.newTab ? "noopener noreferrer" : undefined}
-          >
-            {column.link.label || column.link.url}
-          </a>
-        {/if}
+      <div class={`${sizeToClass[column.size]} px-4 py-4`}>
+        <div class="h-full">
+          {#if column.richText}
+            <div class="prose max-w-none font-thin">
+              {@html renderRichText(column.richText)}
+            </div>
+          {/if}
+          
+          {#if column.enableLink && column.link?.url}
+            <a 
+              href={column.link.url}
+              class="inline-block mt-4 text-primary hover:underline"
+              target={column.link.newTab ? "_blank" : undefined}
+              rel={column.link.newTab ? "noopener noreferrer" : undefined}
+            >
+              {column.link.label || column.link.url}
+            </a>
+          {/if}
+        </div>
       </div>
     {/each}
   </div>
