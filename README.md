@@ -35,8 +35,8 @@ To set up and run this project, follow these steps:
 2. Clone this repository and install dependencies:
 
 ```
-git clone `<repository-url>`
-cd `<repository-name>`
+git clone https://github.com/mschmdb/Paykit
+cd Paykit
 pnpm install
 ```
  
