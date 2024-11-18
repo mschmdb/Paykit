@@ -1,6 +1,9 @@
-# SvelteKit Payload CMS Frontend
+# PAYKIT - SvelteKit Payload CMS Frontend
 
 This repository contains a SvelteKit application that serves as a frontend for Payload CMS v3. It provides dynamic site routes and a blog, creating a flexible and powerful web application.
+
+> [!IMPORTANT]
+> Still work in progress, but if you know how to set up payload & how to do some changes in Svelte you should be good.
 
 ## Features
 
@@ -12,6 +15,12 @@ This repository contains a SvelteKit application that serves as a frontend for P
 - Type-safe API calls with [tRPC](trpc.io)
 - Incremental Static Regeneration ([ISR](https://vercel.com/docs/incremental-static-regeneration)) for improved performance
 - Server-side rendering (SSR) capabilities
+
+### Todos
+
+- still some work needs to go into SEO (i.e. Blog route is not covered pretty good)
+- automatic Sitemap.xml generation
+- automatic ISR Cache regeneration on Content changes from payload
 
 ## Implementation Guide
 
