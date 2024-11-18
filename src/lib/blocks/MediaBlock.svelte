@@ -81,7 +81,7 @@
 
 	function getDefaultSrc(media: Media): string {
 		// Prioritize WebP format, fallback to original if not available
-		const webpSizes = ['large', 'medium', 'small', 'xlarge'] as const;
+		const webpSizes = ['large', 'medium', 'small'] as const;
 		for (const size of webpSizes) {
 			const sizeObj = media.sizes[size];
 			if (sizeObj && sizeObj.mimeType === 'image/webp') {
