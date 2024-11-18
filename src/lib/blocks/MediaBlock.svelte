@@ -68,7 +68,7 @@
 		.join(' ');
 
 	function getSrcSet(media: Media): string {
-		const sizes = ['small', 'medium', 'large', 'xlarge'] as const;
+		const sizes = ['small', 'medium'] as const;
 
 		return sizes
 			.map((size) => {
