@@ -1,15 +1,15 @@
-import type { PageData } from '$lib/types';
+import type { PageData } from '../../routes/$types';
 import { languageTag } from '$lib/paraglide/runtime';
 import { PUBLIC_BASE_URL, PUBLIC_SITE_NAME } from '$env/static/public';
 
 const SITE_NAME = PUBLIC_SITE_NAME;
 const BASE_URL = PUBLIC_BASE_URL
-let language = languageTag();
+const language = languageTag();
 
-export function generateSEOData(data: PageData, type: 'page' | 'post' | 'blog') {
+export function generateSEOData(data: PageData, type: 'page' | 'post' | 'blog' | 'article' | 'website') {
     // Extract title
     const title = type === 'post' 
-        ? `${data.title} | Journal` 
+        ? `${data.title} | Blog` 
         : data.title;
     
     const fullTitle = `${title} | ${SITE_NAME}`;
@@ -33,6 +33,17 @@ export function generateSEOData(data: PageData, type: 'page' | 'post' | 'blog') 
     // Get image URL
     const imageUrl = data.meta?.image?.url || '';
 
+    interface SEOData {
+        title: string;
+        description: string;
+        url: string;
+        imageUrl: string;
+        siteName: string;
+        type: 'article' | 'website';
+        publishedTime: string;
+        authors: string[];
+    }
+
     return {
         title: fullTitle,
         description,
@@ -41,6 +52,6 @@ export function generateSEOData(data: PageData, type: 'page' | 'post' | 'blog') 
         siteName: SITE_NAME,
         type: type === 'post' ? 'article' : 'website',
         publishedTime: data.publishedAt || '',
-        authors: data.populatedAuthors?.map(author => author.name) || []
-    };
+        authors: data.populatedAuthors?.map((author: { name: string }) => author.name) || []
+    } as SEOData;
 }

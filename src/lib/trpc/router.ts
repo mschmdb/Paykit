@@ -14,21 +14,27 @@ export const t = initTRPC.context<Context>().create();
 const isCacheEnabled = CACHE_QUERIES === 'TRUE';
 
 // Helper function to wrap queries with conditional caching
-const conditionalCachedProcedure = <T>(key: string, ttl: number, fetchFn: () => Promise<T>) => {
-  return t.procedure.query(async () => {
+const conditionalCachedProcedure = <T>(
+  keyPrefix: string,
+  ttl: number,
+  fetchFn: (ctx: Context, input: { lang?: string }) => Promise<T>
+) => {
+  return t.procedure.input(z.object({ lang: z.string().optional() })).query(async ({ ctx, input }) => {
+    const cacheKey = `${keyPrefix}-${input.lang || ctx.lang}`; // Include language in cache key
+    
     if (isCacheEnabled) {
-      const cachedData = cache.get<T>(key);
+      const cachedData = cache.get<T>(cacheKey);
       if (cachedData) {
         return cachedData;
       }
     }
 
-    const data = await fetchFn();
-    
+    const data = await fetchFn(ctx, input);
+
     if (isCacheEnabled) {
-      cache.set(key, data, ttl);
+      cache.set(cacheKey, data, ttl);
     }
-    
+
     return data;
   });
 };
@@ -37,10 +43,10 @@ const conditionalCachedProcedure = <T>(key: string, ttl: number, fetchFn: () => 
 const conditionalCachedDynamicProcedure = <T>(
   keyPrefix: string,
   ttl: number,
-  fetchFn: (input: any) => Promise<T>
+  fetchFn: (input: { slug: string; lang?: string }, ctx: Context) => Promise<T>
 ) => {
-  return t.procedure.input(z.object({ slug: z.string() })).query(async ({ input }) => {
-    const cacheKey = `${keyPrefix}-${input.slug}`;
+  return t.procedure.input(z.object({ slug: z.string(), lang: z.string().optional() })).query(async ({ input, ctx }) => {
+    const cacheKey = `${keyPrefix}-${input.slug}-${input.lang || ctx.lang}`;
 
     if (isCacheEnabled) {
       const cachedData = cache.get<T>(cacheKey);
@@ -49,7 +55,7 @@ const conditionalCachedDynamicProcedure = <T>(
       }
     }
 
-    const data = await fetchFn(input);
+    const data = await fetchFn(input, ctx);
 
     if (isCacheEnabled) {
       cache.set(cacheKey, data, ttl);
@@ -60,8 +66,8 @@ const conditionalCachedDynamicProcedure = <T>(
 };
 
 export const router = t.router({
-  loadHeader: conditionalCachedProcedure('header', 300, async () => {
-    const header = await fetchFromPayload('globals/header');
+  loadHeader: conditionalCachedProcedure('header', 300, async (ctx, input) => {
+    const header = await fetchFromPayload('globals/header', { locale: input.lang || ctx.lang });
     if (!header) {
       throw new TRPCError({
         code: 'NOT_FOUND',
@@ -71,8 +77,19 @@ export const router = t.router({
     return header;
   }),
 
-  loadPages: conditionalCachedProcedure('pages', 300, async () => {
-    const pages = await fetchFromPayload('pages');
+  loadFooter: conditionalCachedProcedure('footer', 300, async (ctx, input) => {
+    const footer = await fetchFromPayload('globals/footer', { locale: input.lang || ctx.lang });
+    if (!footer) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Footer not found',
+      });
+    }
+    return footer;
+  }),
+
+  loadPages: conditionalCachedProcedure('pages', 300, async (ctx, input) => {
+    const pages = await fetchFromPayload('pages', { locale: input.lang || ctx.lang });
     if (!pages || !pages.docs) {
       throw new TRPCError({
         code: 'NOT_FOUND',
@@ -82,10 +99,11 @@ export const router = t.router({
     return pages;
   }),
 
-  getPage: conditionalCachedDynamicProcedure('page', 300, async (input) => {
+  getPage: conditionalCachedDynamicProcedure('page', 300, async (input, ctx) => {
     try {
       const page = await fetchFromPayload('pages', {
         'where[slug][equals]': input.slug,
+        locale: input.lang || ctx.lang
       });
       if (!page || !page.docs || page.docs.length === 0) {
         throw new TRPCError({
@@ -103,21 +121,25 @@ export const router = t.router({
     }
   }),
 
-  loadPosts: conditionalCachedProcedure('posts', 300, async () => {
-    const posts = await fetchFromPayload('posts');
+  loadPosts: conditionalCachedProcedure('posts', 300, async (ctx, input) => {
+    const lang = input.lang || ctx.lang;
+   
+    const posts = await fetchFromPayload('posts', { locale: lang });
     if (!posts || !posts.docs) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'No posts found',
       });
     }
+    
     return posts;
   }),
 
-  getPost: conditionalCachedDynamicProcedure('post', 300, async (input) => {
+  getPost: conditionalCachedDynamicProcedure('post', 300, async (input, ctx) => {
     try {
       const post = await fetchFromPayload('posts', {
         'where[slug][equals]': input.slug,
+        locale: input.lang || ctx.lang
       });
       if (!post || !post.docs || post.docs.length === 0) {
         throw new TRPCError({

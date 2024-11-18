@@ -18,6 +18,8 @@
 		meta?: { image?: { url: string } };
 	}>();
 
+	// $inspect('Post in component', post);
+
 	let excerpt = $state(post.excerpt || '');
 
 	function generateExcerpt(content: any, maxLength: number = 150): string {
@@ -42,6 +44,10 @@
 	onMount(() => {
 		excerpt = generateExcerpt(post.content);
 	});
+	$effect(() => {
+		post = post
+		excerpt = generateExcerpt(post.content);
+	});
 </script>
 <div class="py-2 border-t border-black dark:border-white">
 <Card.Root class="hover:bg-muted/50 transition-colors">
@@ -60,11 +66,13 @@
 				</div>
 			</div>
 			<div class="aspect-[4/3] overflow-hidden grayscale">
+				{#if post.meta?.image?.url}
 				<img
-					src={post.meta?.image?.url || '/placeholder.svg?height=300&width=400'}
+					src={post.meta?.image?.url || ''}
 					alt={post.title}
 					class="h-full w-full object-cover"
 				/>
+				{/if}
 			</div>
 		</div>
 	</a>

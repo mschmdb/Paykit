@@ -2,31 +2,30 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
+	import { languageTag } from '$lib/paraglide/runtime';
 	import Navigation from '$lib/components/Navigation.svelte';
-	import { page } from '$app/stores';
-	import type { LayoutServerData } from './$types';
-	import { ModeWatcher } from "mode-watcher";
+	import type { LayoutData } from './$types';
+	import { ModeWatcher } from 'mode-watcher';
 	import Footer from '$lib/components/Footer.svelte';
 	import '../app.css';
 
-	let { data, children } = $props<{ data: LayoutServerData; children: any }>();
-	let pages = $state(data.pages.docs);
-	let key = $state<string | null>(null);
+	let { data, children } = $props<{ data: LayoutData; children: any }>();
+	$inspect(data);
 	$effect(() => {
-		pages = data.pages.docs;
-		key = $page.params.slug;
+		const currentLang = languageTag();
+		data = data
 	});
-	$inspect('pages', $page);
 </script>
+
 <ModeWatcher />
 <ParaglideJS {i18n}>
-	<div class="flex min-h-screen flex-col">
-		<Navigation header={data.header.header} />
-		{#key key}
+	<div class="container mx-auto">
+		<div class="flex min-h-screen min-w-full flex-col md:min-w-[100%]">
+			<Navigation header={data.header.header} />
 			<main class="flex-grow">
 				{@render children()}
 			</main>
-		{/key}
-		<Footer />
+			<Footer footer={data.footer.footer} />
+		</div>
 	</div>
 </ParaglideJS>

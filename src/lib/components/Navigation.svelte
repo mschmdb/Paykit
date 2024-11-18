@@ -26,7 +26,7 @@
 	}
 
 	let { header } = $props<{ header: { navItems: NavItem[] } }>();
-	$inspect('header', header);
+	$inspect("header",header);
 
 	let isOpen = $state(false);
 	let isLargeScreen = $state(false);
@@ -61,10 +61,14 @@
 			mediaQuery.removeEventListener('change', handleResize);
 		};
 	});
+
+	$effect(() => {
+		header = header;
+	});
 </script>
 
 <nav class="pt-4" aria-label="Main navigation">
-	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+	<div class="mx-auto">
 		<div class="flex h-16 items-center justify-between">
 			<div class="flex flex-shrink-0 items-center">
 				<a href="/" class="font-sans font-bold text-4xl leading-none text-black dark:text-white">{PUBLIC_SITE_NAME}</a>
@@ -103,6 +107,7 @@
 				</button>
 			</div>
 		</div>
+		<div class="mx-auto p-[0.5px] bg-gradient-to-r from-sky-400 via-lime-900 to-red-500 rounded"></div>
 	</div>
 
 	{#if !isLargeScreen && isOpen}

@@ -1,29 +1,54 @@
 <script lang="ts">
 	import { PUBLIC_BSKY_HANDLE } from '$env/static/public';
+	import LangSwitcher from './LangSwitcher.svelte';
 
-	interface FooterLink {
-		href: string;
-		label: string;
-		target?: string;
+	interface NavItem {
+		id: string;
+		link: {
+			type: string;
+			newTab: boolean | null;
+			reference: {
+				relationTo: string;
+				value: {
+					id: number;
+					title: string;
+					slug: string;
+				};
+			};
+			url: string | null;
+			label: string;
+		};
 	}
 
-	const footerLinks: FooterLink[] = [
-		{ href: '/imprint', label: 'imprint' },
-		{ href: '/privacy', label: 'privacy' }
-	];
+	interface Footer {
+		id: number;
+		navItems: NavItem[];
+		updatedAt: string;
+		createdAt: string | null;
+		globalType: string;
+	}
+
+	let { footer } = $props<{ footer: Footer }>();
+
+	$effect(() => {
+		footer = footer;
+	});
+
 </script>
 
-<footer class="mt-20 border-t border-border">
+<footer class="mt-20">
+	<div class="mx-auto p-[0.5px] bg-gradient-to-r from-sky-400 via-lime-900 to-red-500 rounded"></div>
 	<div class="mx-auto flex max-w-7xl justify-end px-4 py-8">
 		<div class="flex flex-col items-end gap-4 text-sm sm:flex-row sm:gap-6 align-middle">
-			{#each footerLinks as link}
+			<LangSwitcher />
+			{#each footer.navItems as navItem}
 				<a
-					href={link.href}
+					href={navItem.link.reference.value.slug}
 					class="transition-colors hover:text-foreground my-auto"
-					target={link.target || '_self'}
-					rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
+					target={navItem.link.newTab ? '_blank' : '_self'}
+					rel={navItem.link.newTab ? 'noopener noreferrer' : undefined}
 				>
-					{link.label}
+					{navItem.link.label}
 				</a>
 			{/each}
 			{#if PUBLIC_BSKY_HANDLE}

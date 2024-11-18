@@ -149,7 +149,17 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+
+	
 }
+
+.container {
+	width: 100vw;
+	/* elements inside won't be affected by scrollbars */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+  }
 
 .bluesky-flutter {
 	display: inline-flex;
