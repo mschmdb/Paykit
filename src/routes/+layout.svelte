@@ -10,7 +10,6 @@
 	import '../app.css';
 
 	let { data, children } = $props<{ data: LayoutData; children: any }>();
-	$inspect(data);
 	$effect(() => {
 		const currentLang = languageTag();
 		data = data

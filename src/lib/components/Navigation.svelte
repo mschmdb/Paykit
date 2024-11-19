@@ -26,7 +26,6 @@
 	}
 
 	let { header } = $props<{ header: { navItems: NavItem[] } }>();
-	$inspect("header",header);
 
 	let isOpen = $state(false);
 	let isLargeScreen = $state(false);
