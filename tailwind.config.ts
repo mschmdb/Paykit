@@ -21,8 +21,6 @@ const config: Config = {
 		},
 		extend: {
 			fontFamily: {
-				
-				'mono': ['Cooper Hewitt', '...'],
 				'sans': ['IBM Plex Sans', 'sans-serif'],
 				'serif': ['IBM Plex Serif', 'serif'],
 			},
