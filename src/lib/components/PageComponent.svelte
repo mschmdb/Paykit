@@ -91,7 +91,7 @@
 	<SEO data={generateSEOData(data, type, languageTag())} />
 
 	<article class="mx-auto min-w-full py-12">
-		<h1 class="mb-8 text-3xl font-normal">{data.title}</h1>
+		<h1 class="mb-8 text-3xl font-normal">{data.title ? data.title : 'Blog'}</h1>
 
 		{#if type === 'post'}
 			{#if data.publishedAt}
@@ -110,10 +110,11 @@
 		{#if type === 'blog'}
 			
 
-			<div class="space-y-4 border-b border-black dark:border-white">
+			<div class="space-y-4">
 				{#each data || [] as post}
 					<BlogPostCard {post} />
 				{/each}
+				<div class="mx-auto p-[0.5px] bg-gradient-to-r from-slate-100 to-slate-300 dark:from-slate-600 dark:to-slate-800 rounded"></div>
 			</div>
 		{:else if contentBlocks.length > 0}
 			{#each contentBlocks as block (block.id)}
