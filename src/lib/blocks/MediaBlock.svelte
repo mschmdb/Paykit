@@ -38,57 +38,78 @@
 		disableInnerContainer?: boolean;
 	}
 
-	export let position: MediaBlockProps['position'] = 'default';
-	export let media: MediaBlockProps['media'];
-	export let enableGutter = true;
-	export let className = '';
-	export let imgClassName = '';
-	export let captionClassName = '';
-	export let disableInnerContainer = false;
+	let {
+		position,
+		media,
+		enableGutter,
+		className,
+		imgClassName,
+		captionClassName,
+		disableInnerContainer
+	}: MediaBlockProps = $props();
 
-	$: containerClasses = [
-		'relative',
-		position === 'fullscreen' ? 'w-screen' : 'w-full',
-		enableGutter && position !== 'fullscreen' ? 'px-0' : '',
-		className
-	]
-		.filter(Boolean)
-		.join(' ');
+	let containerClasses = $state('');
+	let imageClasses = $state('');
+	let captionClasses = $state('');
 
-	$: imageClasses = ['w-full h-auto', position === 'default' ? 'rounded-lg' : '', imgClassName]
-		.filter(Boolean)
-		.join(' ');
+	$effect(() => {
+		containerClasses = [
+			'relative',
+			position === 'fullscreen' ? 'w-screen' : 'w-full',
+			enableGutter && position !== 'fullscreen' ? 'px-0' : '',
+			className
+		]
+			.filter(Boolean)
+			.join(' ');
 
-	$: captionClasses = [
-		'mt-2 text-sm text-gray-600',
-		position === 'fullscreen' ? 'px-4' : '',
-		captionClassName
-	]
-		.filter(Boolean)
-		.join(' ');
+		imageClasses = ['w-full h-auto', position === 'default' ? 'rounded-lg' : '', imgClassName]
+			.filter(Boolean)
+			.join(' ');
+
+		captionClasses = [
+			'mt-2 text-sm text-gray-600',
+			position === 'fullscreen' ? 'px-4' : '',
+			captionClassName
+		]
+			.filter(Boolean)
+			.join(' ');
+	});
 
 	function getSrcSet(media: Media): string {
-		const sizes = ['small', 'medium'] as const;
+		if (!media.sizes) return '';
 
-		return sizes
+		const availableSizes = ['small', 'medium', 'large', 'xlarge'] as const;
+		const srcsetEntries = availableSizes
 			.map((size) => {
-				const sizeObj = media.sizes[size];
-				return sizeObj ? `${sizeObj.url} ${sizeObj.width}w` : null;
+				const sizeData = media.sizes[size];
+				if (!sizeData) return null;
+				// Ensure URL is properly encoded and the width descriptor is properly formatted
+				const encodedUrl = sizeData.url.replace(/ /g, '%20');
+				return `${encodedUrl} ${sizeData.width}w`;
 			})
-			.filter(Boolean)
-			.join(', ');
+			.filter(Boolean);
+
+		return srcsetEntries.join(', ');
+	}
+
+	function getSizes(position: MediaBlockProps['position']): string {
+		if (position === 'fullscreen') {
+			return '100vw';
+		}
+		return '(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw';
 	}
 
 	function getDefaultSrc(media: Media): string {
-		// Prioritize WebP format, fallback to original if not available
-		const webpSizes = ['large', 'medium', 'small'] as const;
-		for (const size of webpSizes) {
-			const sizeObj = media.sizes[size];
-			if (sizeObj && sizeObj.mimeType === 'image/webp') {
-				return sizeObj.url;
+		if (!media.sizes) return media.url;
+
+		// Try to get the most appropriate size for default display
+		const preferredSizes = ['large', 'medium', 'small'] as const;
+		for (const size of preferredSizes) {
+			if (media.sizes[size]?.url) {
+				return media.sizes[size].url;
 			}
 		}
-		return media.url; // Fallback to original URL if no WebP is available
+		return media.url;
 	}
 </script>
 
@@ -98,27 +119,29 @@
 			<img
 				src={getDefaultSrc(media)}
 				srcset={getSrcSet(media)}
-				sizes="(max-width: 600px) 100vw, (max-width: 900px) 900px, 1400px"
-				alt={media.alt}
+				sizes={getSizes(position)}
+				alt={media.alt || ''}
 				width={media.width}
 				height={media.height}
 				class={imageClasses}
 				loading="lazy"
+				decoding="async"
 			/>
 		</div>
 	{:else}
-  <div class="relative mb-4">
-		<img
-			src={getDefaultSrc(media)}
-			srcset={getSrcSet(media)}
-			sizes="(max-width: 600px) 100vw, (max-width: 900px) 900px, 1400px"
-			alt={media.alt}
-			width={media.width}
-			height={media.height}
-			class={imageClasses}
-			loading="lazy"
-		/>
-  </div>
+		<div class="relative mb-4">
+			<img
+				src={getDefaultSrc(media)}
+				srcset={getSrcSet(media)}
+				sizes={getSizes(position)}
+				alt={media.alt || ''}
+				width={media.width}
+				height={media.height}
+				class={imageClasses}
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
 	{/if}
 
 	{#if media.caption}

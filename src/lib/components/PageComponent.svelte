@@ -6,8 +6,8 @@
 	import { formatDate } from '$lib/utils/date';
 	import SEO from '$lib/components/SEO.svelte';
 	import { generateSEOData } from '$lib/utils/seo';
-	import type { paraglide } from '@inlang/paraglide-sveltekit/vite';
 	import { languageTag } from '$lib/paraglide/runtime';
+
 
 	interface Author {
 		id: number;
@@ -45,6 +45,7 @@
 	}
 
 	let { data, type } = $props<{ data: PageData; type: 'page' | 'post' | 'blog' }>();
+	$inspect("DataInComponent",data, type);
 	
 	function transformContentToBlocks(content: any) {
 		if (!content || !content.root || !content.root.children) {
@@ -87,7 +88,7 @@
 </script>
 
 
-	<SEO data={generateSEOData(data, type)} />
+	<SEO data={generateSEOData(data, type, languageTag())} />
 
 	<article class="mx-auto min-w-full py-12">
 		<h1 class="mb-8 text-3xl font-normal">{data.title}</h1>
@@ -101,7 +102,7 @@
 
 			{#if data.populatedAuthors && data.populatedAuthors.length > 0}
 				<p class="mb-6 text-sm">
-					Words by {data.populatedAuthors.map((author: Author) => author.name).join(', ')}
+					{m.seemly_funny_kangaroo_zap()} {data.populatedAuthors.map((author: Author) => author.name).join(', ')}
 				</p>
 			{/if}
 		{/if}

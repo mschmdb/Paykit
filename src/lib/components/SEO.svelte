@@ -11,6 +11,7 @@
     }
 
     let { data } = $props<{ data: SEOProps }>();
+    
 </script>
 
 <svelte:head>
