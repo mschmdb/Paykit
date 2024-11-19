@@ -29,7 +29,7 @@
 	}
 
 	interface MediaBlockProps {
-		position?: 'default' | 'fullscreen';
+		position?: 'default' | 'fullscreen' | 'thumbnail';
 		media: Media;
 		enableGutter?: boolean;
 		className?: string;
@@ -39,13 +39,13 @@
 	}
 
 	let {
-		position,
+		position = 'default',
 		media,
-		enableGutter,
-		className,
-		imgClassName,
-		captionClassName,
-		disableInnerContainer
+		enableGutter = true,
+		className = '',
+		imgClassName = '',
+		captionClassName = '',
+		disableInnerContainer = false
 	}: MediaBlockProps = $props();
 
 	let containerClasses = $state('');
@@ -62,7 +62,12 @@
 			.filter(Boolean)
 			.join(' ');
 
-		imageClasses = ['w-full h-auto', position === 'default' ? 'rounded-lg' : '', imgClassName]
+		imageClasses = [
+			'w-full h-auto',
+			position === 'default' ? 'rounded-lg' : '',
+			position === 'thumbnail' ? 'rounded-md' : '',
+			imgClassName
+		]
 			.filter(Boolean)
 			.join(' ');
 
@@ -75,15 +80,17 @@
 			.join(' ');
 	});
 
-	function getSrcSet(media: Media): string {
+	function getSrcSet(media: Media, position: MediaBlockProps['position']): string {
 		if (!media.sizes) return '';
 
-		const availableSizes = ['small', 'medium', 'large', 'xlarge'] as const;
+		const availableSizes = position === 'thumbnail' 
+			? ['thumbnail', 'small'] as const
+			: ['small', 'medium', 'large', 'xlarge'] as const;
+
 		const srcsetEntries = availableSizes
 			.map((size) => {
 				const sizeData = media.sizes[size];
 				if (!sizeData) return null;
-				// Ensure URL is properly encoded and the width descriptor is properly formatted
 				const encodedUrl = sizeData.url.replace(/ /g, '%20');
 				return `${encodedUrl} ${sizeData.width}w`;
 			})
@@ -95,15 +102,19 @@
 	function getSizes(position: MediaBlockProps['position']): string {
 		if (position === 'fullscreen') {
 			return '100vw';
+		} else if (position === 'thumbnail') {
+			return '(max-width: 768px) 100px, 150px';
 		}
 		return '(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw';
 	}
 
-	function getDefaultSrc(media: Media): string {
+	function getDefaultSrc(media: Media, position: MediaBlockProps['position']): string {
 		if (!media.sizes) return media.url;
 
-		// Try to get the most appropriate size for default display
-		const preferredSizes = ['large', 'medium', 'small'] as const;
+		const preferredSizes = position === 'thumbnail'
+			? ['thumbnail', 'small', 'medium'] as const
+			: ['large', 'medium', 'small'] as const;
+
 		for (const size of preferredSizes) {
 			if (media.sizes[size]?.url) {
 				return media.sizes[size].url;
@@ -117,8 +128,8 @@
 	{#if !disableInnerContainer && position === 'fullscreen'}
 		<div class="relative mx-auto max-w-7xl">
 			<img
-				src={getDefaultSrc(media)}
-				srcset={getSrcSet(media)}
+				src={getDefaultSrc(media, position)}
+				srcset={getSrcSet(media, position)}
 				sizes={getSizes(position)}
 				alt={media.alt || ''}
 				width={media.width}
@@ -131,8 +142,8 @@
 	{:else}
 		<div class="relative mb-4">
 			<img
-				src={getDefaultSrc(media)}
-				srcset={getSrcSet(media)}
+				src={getDefaultSrc(media, position)}
+				srcset={getSrcSet(media, position)}
 				sizes={getSizes(position)}
 				alt={media.alt || ''}
 				width={media.width}
@@ -144,7 +155,7 @@
 		</div>
 	{/if}
 
-	{#if media.caption}
+	{#if media.caption && position !== 'thumbnail'}
 		<div class={captionClasses}>
 			{media.caption}
 		</div>
