@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { SvelteComponentTyped } from 'svelte';
+  import CodeBlock from './CodeBlock.svelte';
 
   /** Represents the possible sizes for a column */
   type ColumnSize = 'full' | 'half' | 'twoThirds' | 'oneThird';
@@ -64,50 +65,65 @@
    * @param richText - The rich text object to render
    * @returns A string of HTML representing the rendered rich text
    */
-  function renderRichText(richText: any): string {
-    if (!richText?.root?.children) return '';
-    
-    return richText.root.children.map((node: any) => {
-      if (node.type === 'paragraph') {
-        const text = node.children
-          .map((child: any) => child.text)
-          .join('');
-        return `<p class="mb-2 font-serif font-extralight text-black dark:text-white text-pretty">${text}</p>`;
-      } else if (node.type === 'heading') {
-        const text = node.children
-          .map((child: any) => child.text)
-          .join('');
-        const tag = node.tag || 'h2'; // Default to h2 if tag is not specified
-        return `<${tag} class="text-2xl font-sans font-bold mb-4">${text}</${tag}>`;
-      }
-      return '';
-    }).join('');
-  }
+   function renderRichText(richText: any): string {
+		if (!richText?.root?.children) return '';
+		
+		return richText.root.children.map((node: any) => {
+			if (node.type === 'paragraph') {
+				const text = node.children
+					.map((child: any) => child.text)
+					.join('');
+				return `<p class="mb-2 font-serif font-extralight text-black dark:text-white text-pretty">${text}</p>`;
+			} else if (node.type === 'heading') {
+				const text = node.children
+					.map((child: any) => child.text)
+					.join('');
+				const tag = node.tag || 'h2';
+				return `<${tag} class="text-2xl font-sans font-bold mb-4">${text}</${tag}>`;
+			} else if (node.type === 'block' && node.fields?.blockType === 'code') {
+				return `<div id="code-block-${node.fields.id}"></div>`;
+			}
+			return '';
+		}).join('');
+	}
+
+	function getCodeBlocks(richText: any): any[] {
+		if (!richText?.root?.children) return [];
+		
+		return richText.root.children.filter((node: any) => 
+			node.type === 'block' && node.fields?.blockType === 'code'
+		);
+	}
 </script>
 
 <div class="mx-auto">
-  <div class="flex flex-wrap -mx-4 -my-4">
-    {#each block.columns as column (column.id)}
-      <div class={`${sizeToClass[column.size]} px-4 py-4`}>
-        <div class="h-full">
-          {#if column.richText}
-            <div class="prose max-w-none font-thin">
-              {@html renderRichText(column.richText)}
-            </div>
-          {/if}
-          
-          {#if column.enableLink && column.link?.url}
-            <a 
-              href={column.link.url}
-              class="inline-block mt-4 text-primary hover:underline"
-              target={column.link.newTab ? "_blank" : undefined}
-              rel={column.link.newTab ? "noopener noreferrer" : undefined}
-            >
-              {column.link.label || column.link.url}
-            </a>
-          {/if}
-        </div>
-      </div>
-    {/each}
-  </div>
+	<div class="flex flex-wrap -mx-4 -my-4">
+		{#each block.columns as column (column.id)}
+			<div class={`${sizeToClass[column.size]} px-4 py-4`}>
+				<div class="h-full">
+					{#if column.richText}
+						<div class="prose max-w-none font-thin">
+							{@html renderRichText(column.richText)}
+						</div>
+						{#each getCodeBlocks(column.richText) as codeBlock}
+							<div id={`code-block-${codeBlock.fields.id}`}>
+								<CodeBlock code={codeBlock.fields.code} language={codeBlock.fields.language} />
+							</div>
+						{/each}
+					{/if}
+					
+					{#if column.enableLink && column.link?.url}
+						<a 
+							href={column.link.url}
+							class="inline-block mt-4 text-primary hover:underline"
+							target={column.link.newTab ? "_blank" : undefined}
+							rel={column.link.newTab ? "noopener noreferrer" : undefined}
+						>
+							{column.link.label || column.link.url}
+						</a>
+					{/if}
+				</div>
+			</div>
+		{/each}
+	</div>
 </div>

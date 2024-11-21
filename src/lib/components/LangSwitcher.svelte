@@ -3,12 +3,15 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import { i18n } from '$lib/i18n.js';
 	import { page } from '$app/stores';
+
+	// Provide a fallback for Storybook environment
+	$: currentPath = $page?.url?.pathname ?? '/';
 </script>
 
 <div class="my-auto flex items-center space-x-1">
 	{#each availableLanguageTags as lang, i}
 		<a
-			href={i18n.route($page.url.pathname)}
+			href={i18n.route(currentPath)}
 			hreflang={lang}
 			aria-current={lang === languageTag() ? 'page' : undefined}
 			aria-label={m.suave_main_pug_trip()}

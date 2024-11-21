@@ -7,8 +7,6 @@ const SITE_NAME = PUBLIC_SITE_NAME;
 const BASE_URL = PUBLIC_BASE_URL
 const language = languageTag();
 
-console.log('language in seo.ts', language);
-
 export function generateSEOData(data: PageData, type: 'page' | 'post' | 'blog' | 'article' | 'website', lang:string = language) {
     if (type === 'blog') {
         // Hardcoded SEO data for the /blog route
