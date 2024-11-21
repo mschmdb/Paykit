@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Img from '@zerodevx/svelte-img';
+
 	interface MediaSize {
 		url: string;
 		width: number;
@@ -19,12 +21,12 @@
 		width: number;
 		height: number;
 		sizes: {
-			thumbnail: MediaSize;
-			square: MediaSize;
-			small: MediaSize;
-			medium: MediaSize;
-			large: MediaSize;
-			xlarge: MediaSize;
+			thumbnail?: MediaSize;
+			square?: MediaSize;
+			small?: MediaSize;
+			medium?: MediaSize;
+			large?: MediaSize;
+			xlarge?: MediaSize;
 		};
 	}
 
@@ -49,24 +51,45 @@
 	}: MediaBlockProps = $props();
 
 	let containerClasses = $state('');
-	let imageClasses = $state('');
 	let captionClasses = $state('');
 
+	// Generate `src` object for svelte-img
+	function getSrcObject(media: Media): any {
+		if (!media) return null;
+
+		const sources: Record<string, string> = {};
+
+		// Populate `sources` for srcset
+		if (media.sizes) {
+			const availableSizes = ['thumbnail', 'small', 'medium', 'large', 'xlarge'] as const;
+			for (const size of availableSizes) {
+				const sizeData = media.sizes[size];
+				if (sizeData?.url && sizeData?.mimeType) {
+					const format = sizeData.mimeType.split('/')[1]; // Extract format from MIME type
+					if (format) {
+						sources[format] = (sources[format] || '') + `${sizeData.url} ${sizeData.width}w, `;
+					}
+				}
+			}
+		}
+
+		// Fallback image
+		const fallbackImg = {
+			src: media.url,
+			w: media.width,
+			h: media.height
+		};
+
+		return { sources, img: fallbackImg };
+	}
+
+	// Classes and captions
 	$effect(() => {
 		containerClasses = [
 			'relative',
 			position === 'fullscreen' ? 'w-screen' : 'w-full',
 			enableGutter && position !== 'fullscreen' ? 'px-0' : '',
 			className
-		]
-			.filter(Boolean)
-			.join(' ');
-
-		imageClasses = [
-			'w-full h-auto',
-			position === 'default' ? 'rounded-lg' : '',
-			position === 'thumbnail' ? 'rounded-md' : '',
-			imgClassName
 		]
 			.filter(Boolean)
 			.join(' ');
@@ -80,82 +103,22 @@
 			.join(' ');
 	});
 
-	function getSrcSet(media: Media, position: MediaBlockProps['position']): string {
-		if (!media.sizes) return '';
-
-		const availableSizes = position === 'thumbnail' 
-			? ['thumbnail', 'small'] as const
-			: ['small', 'medium'] as const;
-
-		const srcsetEntries = availableSizes
-			.map((size) => {
-				const sizeData = media.sizes[size];
-				if (!sizeData) return null;
-				const encodedUrl = sizeData.url.replace(/ /g, '%20');
-				return `${encodedUrl} ${sizeData.width}w`;
-			})
-			.filter(Boolean);
-
-		return srcsetEntries.join(', ');
-	}
-
-	function getSizes(position: MediaBlockProps['position']): string {
-		if (position === 'fullscreen') {
-			return '100vw';
-		} else if (position === 'thumbnail') {
-			return '(max-width: 768px) 100px, 150px';
+	$effect(() => {
+		// Ensure media is defined
+		if (!media) {
+			console.error('Media object is undefined or null');
 		}
-		return '(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw';
-	}
-
-	function getDefaultSrc(media: Media, position: MediaBlockProps['position']): string {
-		if (!media.sizes) return media.url;
-
-		const preferredSizes = position === 'thumbnail'
-			? ['thumbnail', 'small', 'medium'] as const
-			: ['large', 'medium', 'small'] as const;
-
-		for (const size of preferredSizes) {
-			if (media.sizes[size]?.url) {
-				return media.sizes[size].url;
-			}
-		}
-		return media.url;
-	}
+	});
 </script>
 
 <div class={containerClasses}>
-	{#if !disableInnerContainer && position === 'fullscreen'}
-		<div class="relative mx-auto max-w-7xl">
-			<img
-				src={getDefaultSrc(media, position)}
-				srcset={getSrcSet(media, position)}
-				sizes={getSizes(position)}
-				alt={media.alt || ''}
-				width={media.width}
-				height={media.height}
-				class={imageClasses}
-				loading="lazy"
-				decoding="async"
-			/>
-		</div>
+	{#if media && getSrcObject(media)}
+		<Img src={getSrcObject(media)} alt={media.alt || ''} class={imgClassName} />
 	{:else}
-		<div class="relative mb-4">
-			<img
-				src={getDefaultSrc(media, position)}
-				srcset={getSrcSet(media, position)}
-				sizes={getSizes(position)}
-				alt={media.alt || ''}
-				width={media.width}
-				height={media.height}
-				class={imageClasses}
-				loading="lazy"
-				decoding="async"
-			/>
-		</div>
+		<p class="text-red-500">Image data is missing or incomplete.</p>
 	{/if}
 
-	{#if media.caption && position !== 'thumbnail'}
+	{#if media?.caption && position !== 'thumbnail'}
 		<div class={captionClasses}>
 			{media.caption}
 		</div>

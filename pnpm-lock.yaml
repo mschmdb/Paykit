@@ -29,6 +29,9 @@ importers:
       '@trpc/server':
         specifier: ^10.45.2
         version: 10.45.2
+      '@unpic/svelte':
+        specifier: ^0.0.56
+        version: 0.0.56(svelte@5.2.5)
       delay:
         specifier: ^6.0.0
         version: 6.0.0
@@ -111,6 +114,9 @@ importers:
       '@types/eslint':
         specifier: ^9.6.0
         version: 9.6.1
+      '@zerodevx/svelte-img':
+        specifier: ^2.1.2
+        version: 2.1.2(rollup@4.26.0)(svelte@5.2.5)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -1889,6 +1895,14 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
+  '@unpic/core@0.0.52':
+    resolution: {integrity: sha512-XRX0ePG0nH/K9x/coCQwFzSzg66INBNgPZR2FeSis6BHyxw3sBjL4KDzYse6d/Zx0F3APWsWkK2htaGRznjHMw==}
+
+  '@unpic/svelte@0.0.56':
+    resolution: {integrity: sha512-YkZaHLYEQycs4MoBH0YXt29hdSaS6RoUOpSf1IaZ4MnfJOrRcjpAxIsN8uMaLu8g7IyxO9dWHmPmmECpKluA5g==}
+    peerDependencies:
+      svelte: '*'
+
   '@vercel/nft@0.27.6':
     resolution: {integrity: sha512-mwuyUxskdcV8dd7N7JnxBgvFEz1D9UOePI/WyLLzktv6HSCwgPNQGit/UJ2IykAWGlypKw4pBQjOKWvIbXITSg==}
     engines: {node: '>=16'}
@@ -1938,6 +1952,11 @@ packages:
   '@wolfy1339/lru-cache@11.0.2-patch.1':
     resolution: {integrity: sha512-BgYZfL2ADCXKOw2wJtkM3slhHotawWkgIRRxq4wEybnZQPjvAp71SPX35xepMykTw8gXlzWcWPTY31hlbnRsDA==}
     engines: {node: 18 >=18.20 || 20 || >=22}
+
+  '@zerodevx/svelte-img@2.1.2':
+    resolution: {integrity: sha512-zPyD3U8hzpe+72QzADKvo8n+uUctD7RUCajgJ9ToX4Yqkov+f80/BYA35N4TfIXj0K7Qi00yPHexeTIzj8QqHA==}
+    peerDependencies:
+      svelte: ^3.55.1 || ^4.0.0 || ^5.0.0
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -3090,6 +3109,10 @@ packages:
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
+
+  imagetools-core@6.0.4:
+    resolution: {integrity: sha512-N1qs5qn7u9nR3kboISkYuvJm8MohiphCfBa+wx1UOropVaFis9/mh6wuDPLHJNhl6/64C7q2Pch5NASVKAaSrg==}
+    engines: {node: '>=12.0.0'}
 
   imagetools-core@7.0.1:
     resolution: {integrity: sha512-XDUx3Ac1VrZ4XF5eAJNYdHbFXRPNyebHFrwJsZ4WHb7X2MitOVW23cFphSDByT3MH5rdWdxKr4edSW2agChvDg==}
@@ -4546,6 +4569,9 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
+  style-object-to-css-string@1.1.3:
+    resolution: {integrity: sha512-bISQoUsir/qGfo7vY8rw00ia9nnyE1jvYt3zZ2jhdkcXZ6dAEi74inMzQ6On57vFI+I4Fck6wOv5UI9BEwJDgw==}
+
   style-to-object@1.0.8:
     resolution: {integrity: sha512-xT47I/Eo0rwJmaXC4oilDGDWLohVhR6o/xAQcPQN8q6QBuZVL8qMYL85kLmST5cPjAorwvqIA4qXTRQoYHaL6g==}
 
@@ -4861,6 +4887,9 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
+  unpic@3.20.0:
+    resolution: {integrity: sha512-reWY4Ez9FCjw8J7fGByyyi1Z1fv20xjkFgDa9xI7vqdg89fcLzUYkROKo7yZ5WHRelq6x+pL4ohPRzEdU020aQ==}
+
   unplugin@1.16.0:
     resolution: {integrity: sha512-5liCNPuJW8dqh3+DM6uNM2EI3MLLpCKp/KY+9pB5M2S2SR2qvvDHhKgBOaTWEbZTAws3CXfB0rKTIolWKL05VQ==}
     engines: {node: '>=14.0.0'}
@@ -4903,6 +4932,10 @@ packages:
 
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
+
+  vite-imagetools@6.2.9:
+    resolution: {integrity: sha512-C4ZYhgj2vAj43/TpZ06XlDNP0p/7LIeYbgUYr+xG44nM++4HGX6YZBKAYpiBNgiCFUTJ6eXkRppWBrfPMevgmg==}
+    engines: {node: '>=12.0.0'}
 
   vite-imagetools@7.0.4:
     resolution: {integrity: sha512-C9C7b2p/8/TCN2g26tE9haoer2i8K4x0v2RXUiHsIjiz221vQuKItCQ+VyiVCsUMPXfJC/tlZsmCZVBz5jh7uA==}
@@ -7048,6 +7081,17 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
+  '@unpic/core@0.0.52':
+    dependencies:
+      unpic: 3.20.0
+
+  '@unpic/svelte@0.0.56(svelte@5.2.5)':
+    dependencies:
+      '@unpic/core': 0.0.52
+      style-object-to-css-string: 1.1.3
+      svelte: 5.2.5
+      unpic: 3.20.0
+
   '@vercel/nft@0.27.6':
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
@@ -7129,6 +7173,13 @@ snapshots:
       tinyrainbow: 1.2.0
 
   '@wolfy1339/lru-cache@11.0.2-patch.1': {}
+
+  '@zerodevx/svelte-img@2.1.2(rollup@4.26.0)(svelte@5.2.5)':
+    dependencies:
+      svelte: 5.2.5
+      vite-imagetools: 6.2.9(rollup@4.26.0)
+    transitivePeerDependencies:
+      - rollup
 
   abbrev@1.1.1: {}
 
@@ -8329,6 +8380,10 @@ snapshots:
   ignore@5.3.1: {}
 
   ignore@5.3.2: {}
+
+  imagetools-core@6.0.4:
+    dependencies:
+      sharp: 0.33.5
 
   imagetools-core@7.0.1: {}
 
@@ -10137,6 +10192,8 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
+  style-object-to-css-string@1.1.3: {}
+
   style-to-object@1.0.8:
     dependencies:
       inline-style-parser: 0.2.4
@@ -10454,6 +10511,8 @@ snapshots:
 
   universalify@2.0.1: {}
 
+  unpic@3.20.0: {}
+
   unplugin@1.16.0:
     dependencies:
       acorn: 8.14.0
@@ -10505,6 +10564,13 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
       vfile-message: 4.0.2
+
+  vite-imagetools@6.2.9(rollup@4.26.0):
+    dependencies:
+      '@rollup/pluginutils': 5.1.3(rollup@4.26.0)
+      imagetools-core: 6.0.4
+    transitivePeerDependencies:
+      - rollup
 
   vite-imagetools@7.0.4(rollup@4.26.0):
     dependencies:
