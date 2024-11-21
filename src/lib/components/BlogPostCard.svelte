@@ -54,10 +54,10 @@
 <div class="py-2">
 	<Card.Root class="hover:bg-muted/50 transition-colors">
 		<article class="group">
-			<a href="/blog/{post.slug}" class="block focus:outline-none focus:ring-2 focus:ring-primary" aria-labelledby="post-title-{post.slug}">
+			<a href="/blog/{post.slug}" class="block focus:outline-none dark:focus:ring-[0.5px] focus:ring-1 focus:ring-primary rounded-sm" aria-labelledby="post-title-{post.slug}">
 				<div class="grid grid-cols-1 md:grid-cols-[2fr,3fr,2fr] gap-6 p-6">
 					<div class="space-y-2">
-						<Card.Title id="post-title-{post.slug}" class="text-xl font-semibold group-hover:text-primary transition-colors">{post.title}</Card.Title>
+						<Card.Title level={2} id="post-title-{post.slug}" class="text-xl font-semibold group-hover:text-primary transition-colors"><h2>{post.title}</h2></Card.Title>
 						<time datetime={post.publishedAt} class="text-sm">
 							<span class="sr-only">Published on:</span> {formattedDate}
 						</time>
@@ -79,7 +79,7 @@
 							</span>
 						</div>
 					</div>
-					<div class="aspect-[4/3] overflow-hidden">
+					<div class="aspect-[4/3] overflow-hidden saturate-0">
 						{#if post.meta?.image}
 							<MediaBlock
 								position="thumbnail"
@@ -93,8 +93,8 @@
 								imgClassName="h-full w-full object-cover transition-opacity group-hover:opacity-80"
 							/>
 						{:else}
-							<div class="h-full w-full bg-muted flex items-center justify-center" aria-hidden="true">
-								<span class="">No image available</span>
+							<div class="h-full w-full flex items-center justify-center" aria-hidden="true">
+								<span class=""></span>
 							</div>
 						{/if}
 					</div>

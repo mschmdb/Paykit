@@ -85,7 +85,7 @@
 
 		const availableSizes = position === 'thumbnail' 
 			? ['thumbnail', 'small'] as const
-			: ['small', 'medium', 'large', 'xlarge'] as const;
+			: ['small', 'medium'] as const;
 
 		const srcsetEntries = availableSizes
 			.map((size) => {
