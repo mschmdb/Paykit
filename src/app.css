@@ -153,6 +153,10 @@
 	
 }
 
+.shiki {
+	padding: 1rem;
+}
+
 .container {
 	width: 100vw;
 	/* elements inside won't be affected by scrollbars */

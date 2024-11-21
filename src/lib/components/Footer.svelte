@@ -7,7 +7,7 @@
 		link: {
 			type: string;
 			newTab: boolean | null;
-			reference: {
+			reference?: {
 				relationTo: string;
 				value: {
 					id: number;
@@ -15,7 +15,7 @@
 					slug: string;
 				};
 			};
-			url: string | null;
+			url?: string | null;
 			label: string;
 		};
 	}
@@ -30,27 +30,59 @@
 
 	let { footer } = $props<{ footer: Footer }>();
 
+	// Watch and set `footer` as reactive
 	$effect(() => {
 		footer = footer;
 	});
+	$inspect('Footer', footer);
+	// Helper function to determine href
+	function getNavItemHref(navItem: NavItem): string {
+		if (!navItem?.link) {
+			console.warn('Invalid navItem detected (missing link):', navItem);
+			return '#';
+		}
 
+		if (navItem.link.type === 'reference' && navItem.link.reference?.value?.slug) {
+			return `/${navItem.link.reference.value.slug}`;
+		}
+
+		if (navItem.link.url) {
+			return navItem.link.url;
+		}
+
+		console.warn('NavItem has no valid href:', navItem);
+		return '#';
+	}
 </script>
 
 <footer class="mt-20">
-	<div class="mx-auto p-[0.5px] bg-gradient-to-r from-sky-400 via-lime-900 to-red-500 rounded"></div>
+	<div
+		class="mx-auto rounded bg-gradient-to-r from-sky-400 via-lime-900 to-red-500 p-[0.5px]"
+	></div>
 	<div class="mx-auto flex max-w-7xl justify-end px-4 py-8">
-		<div class="flex flex-col items-end gap-4 text-sm sm:flex-row sm:gap-6 align-middle">
-			<LangSwitcher />
-			{#each footer.navItems as navItem}
-				<a
-					href={navItem.link.reference.value.slug}
-					class="transition-colors hover:text-foreground my-auto"
-					target={navItem.link.newTab ? '_blank' : '_self'}
-					rel={navItem.link.newTab ? 'noopener noreferrer' : undefined}
-				>
-					{navItem.link.label}
-				</a>
-			{/each}
+		<div class="flex flex-col items-end gap-4 align-middle text-sm sm:flex-row sm:gap-6">
+			{#if typeof LangSwitcher !== 'undefined'}
+				<LangSwitcher />
+			{/if}
+			{#if footer?.navItems?.length > 0}
+				{#each footer.navItems as navItem}
+					{#if navItem?.link}
+						<a
+							href={getNavItemHref(navItem)}
+							class="my-auto transition-colors hover:text-foreground"
+							target={navItem.link.newTab ? '_blank' : '_self'}
+							rel={navItem.link.newTab ? 'noopener noreferrer' : undefined}
+						>
+							{navItem.link.label}
+						</a>
+					{:else}
+						<span class="text-gray-500">Invalid link</span>
+					{/if}
+				{/each}
+			{:else}
+				<span class="text-gray-500">No links available</span>
+			{/if}
+
 			{#if PUBLIC_BSKY_HANDLE}
 				<a
 					href="https://bsky.app/profile/{PUBLIC_BSKY_HANDLE}"

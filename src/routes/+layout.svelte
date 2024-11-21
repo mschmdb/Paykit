@@ -18,7 +18,7 @@
 
 <ModeWatcher />
 <ParaglideJS {i18n}>
-	<div class="container mx-auto">
+	<div class="container mx-auto overflow-y-auto">
 		<div class="flex min-h-screen min-w-full flex-col md:min-w-[100%]">
 			<Navigation header={data.header.header} />
 			<main class="flex-grow">

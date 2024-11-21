@@ -25,7 +25,7 @@
 		};
 	}
 
-	let { header } = $props<{ header: { navItems: NavItem[] } }>();
+	let { header } = $props<{ header?: { navItems: NavItem[] } }>();
 
 	let isOpen = $state(false);
 	let isLargeScreen = $state(false);
@@ -73,16 +73,18 @@
 				<a href="/" class="font-sans font-bold text-4xl leading-none text-black dark:text-white">{PUBLIC_SITE_NAME}</a>
 			</div>
 			<div class="hidden items-center space-x-4 sm:flex">
-				{#each header.navItems as item (item.id)}
-					<a
-						href={getHref(item)}
-						class="text-base transition-colors hover:text-foreground"
-						target={item.link.newTab ? "_blank" : undefined}
-						rel={item.link.newTab ? "noopener noreferrer" : undefined}
-					>
-						{item.link.label}
-					</a>
-				{/each}
+				{#if header && header.navItems}
+					{#each header.navItems as item (item.id)}
+						<a
+							href={getHref(item)}
+							class="text-base transition-colors hover:text-foreground"
+							target={item.link.newTab ? "_blank" : undefined}
+							rel={item.link.newTab ? "noopener noreferrer" : undefined}
+						>
+							{item.link.label}
+						</a>
+					{/each}
+				{/if}
 				<Button onclick={toggleMode} variant="outline" size="icon">
 					<Sun
 						class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
@@ -90,7 +92,7 @@
 					<Moon
 						class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
 					/>
-					<span class="sr-only">{m.next_long_niklas_kiss}</span>
+					<span class="sr-only">{m.next_long_niklas_kiss()}</span>
 				</Button>
 			</div>
 			<div class="flex items-center sm:hidden">
@@ -117,17 +119,19 @@
 			transition:slide
 		>
 			<div class="space-y-1 px-4 py-4 text-right">
-				{#each header.navItems as item (item.id)}
-					<a
-						href={getHref(item)}
-						class="block py-2 text-base text-muted-foreground hover:text-foreground"
-						target={item.link.newTab ? "_blank" : undefined}
-						rel={item.link.newTab ? "noopener noreferrer" : undefined}
-						onclick={closeMenu}
-					>
-						{item.link.label}
-					</a>
-				{/each}
+				{#if header && header.navItems}
+					{#each header.navItems as item (item.id)}
+						<a
+							href={getHref(item)}
+							class="block py-2 text-base text-muted-foreground hover:text-foreground"
+							target={item.link.newTab ? "_blank" : undefined}
+							rel={item.link.newTab ? "noopener noreferrer" : undefined}
+							onclick={closeMenu}
+						>
+							{item.link.label}
+						</a>
+					{/each}
+				{/if}
 				<div class="py-2">
 					<Button onclick={toggleMode} variant="outline" size="icon">
 						<Sun
