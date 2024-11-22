@@ -91,8 +91,9 @@
 	<SEO data={generateSEOData(data, type, languageTag())} />
 
 	<article class="mx-auto min-w-full py-12">
+		
 		<h1 class="mb-8 text-3xl font-normal">{data.title ? data.title : 'Blog'}</h1>
-
+		
 		{#if type === 'post'}
 			{#if data.publishedAt}
 				<p class="mb-6 text-sm">
