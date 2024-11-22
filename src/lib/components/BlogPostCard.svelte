@@ -50,30 +50,47 @@
 
 	const formattedDate = post.publishedAt ? formatDate(post.publishedAt) : 'Date unknown';
 </script>
-<div class="mx-auto p-[0.5px] bg-gradient-to-r from-slate-100 to-slate-300 dark:from-slate-600 dark:to-slate-800 rounded"></div>
+
+<div
+	class="mx-auto rounded bg-gradient-to-r from-slate-100 to-slate-300 p-[0.5px] dark:from-slate-600 dark:to-slate-800"
+></div>
 <div class="py-2">
-	<Card.Root class="hover:bg-muted/50 transition-colors">
+	<Card.Root class="transition-colors hover:bg-muted/50">
 		<article class="group">
-			<a href="/blog/{post.slug}" class="block focus:outline-none dark:focus:ring-[0.5px] focus:ring-1 focus:ring-primary rounded-sm" aria-labelledby="post-title-{post.slug}">
-				<div class="grid grid-cols-1 md:grid-cols-[2fr,3fr,2fr] gap-6 p-6">
+			<a
+				href="/blog/{post.slug}"
+				class="block rounded-sm focus:outline-none focus:ring-1 focus:ring-primary dark:focus:ring-[0.5px]"
+				aria-labelledby="post-title-{post.slug}"
+			>
+				<div class="grid grid-cols-1 gap-6 p-6 md:grid-cols-[2fr,3fr,2fr]">
 					<div class="space-y-2">
-						<Card.Title level={2} id="post-title-{post.slug}" class="text-xl font-semibold group-hover:text-primary transition-colors"><h2>{post.title}</h2></Card.Title>
+						<Card.Title
+							level={2}
+							id="post-title-{post.slug}"
+							class="text-xl font-semibold transition-colors group-hover:text-primary"
+							><h2>{post.title}</h2></Card.Title
+						>
 						<time datetime={post.publishedAt} class="text-sm">
-							<span class="sr-only">Published on:</span> {formattedDate}
+							<span class="sr-only">Published on:</span>
+							{formattedDate}
 						</time>
 						{#if post.populatedAuthors && post.populatedAuthors.length > 0}
 							<p class="text-sm">
 								<span class="sr-only">Authors:</span>
-								{post.populatedAuthors.map(author => author.name).join(', ')}
+								{post.populatedAuthors.map((author) => author.name).join(', ')}
 							</p>
 						{/if}
 					</div>
 					<div class="space-y-4">
-						<Card.Description class="text-base font-serif font-extralight text-black dark:text-white leading-relaxed">
+						<Card.Description
+							class="font-serif text-base font-extralight leading-relaxed text-black dark:text-white"
+						>
 							{excerpt}
 						</Card.Description>
 						<div class="pt-2">
-							<span class="text-sm text-primary font-medium group-hover:text-primary-dark transition-colors">
+							<span
+								class="group-hover:text-primary-dark text-sm font-medium text-primary transition-colors"
+							>
 								{m.yummy_warm_cobra_mop()}
 								<span class="sr-only">about {post.title}</span>
 							</span>
@@ -93,7 +110,7 @@
 								imgClassName="h-full w-full object-cover transition-opacity group-hover:opacity-80"
 							/>
 						{:else}
-							<div class="h-full w-full flex items-center justify-center" aria-hidden="true">
+							<div class="flex h-full w-full items-center justify-center" aria-hidden="true">
 								<span class=""></span>
 							</div>
 						{/if}

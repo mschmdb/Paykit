@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Img from '@zerodevx/svelte-img';
+
 
 	interface MediaSize {
 		url: string;
@@ -41,114 +41,94 @@
 	}
 
 	let {
-		position = 'default',
-		media,
-		enableGutter = true,
-		className = '',
-		imgClassName = '',
-		captionClassName = '',
-		disableInnerContainer = false
-	}: MediaBlockProps = $props();
+        position = 'default',
+        media,
+        enableGutter = true,
+        className = '',
+        imgClassName = '',
+        captionClassName = '',
+        disableInnerContainer = false
+    }: MediaBlockProps = $props();
+    $inspect("media", media, "position", position);
 
-	let containerClasses = $state('');
-	let captionClasses = $state('');
+    let containerClasses = $state('');
+    let captionClasses = $state('');
 
-	function getPreloadSrc(media: Media): string | null {
-		if (!media || !media.url) return null;
-		return media.url; // Use the main image URL for preloading
-	}
+    function getSrcObject(media: Media, position: MediaBlockProps['position']): any {
+        if (!media) return null;
 
-	// Generate `src` object for svelte-img
-	function getSrcObject(media: Media, position: MediaBlockProps['position']): any {
-		if (!media) return null;
+        const sources: Record<string, string> = {};
 
-		const sources: Record<string, string> = {};
+        // Determine which sizes to use based on position
+        let sizesToUse: (keyof Media['sizes'])[];
+        if (position === 'thumbnail') {
+            sizesToUse = ['thumbnail'];
+        } else if (position === 'fullscreen') {
+            sizesToUse = ['large', 'xlarge'];
+        } else {
+            sizesToUse = ['small', 'medium', 'large', 'xlarge'];
+        }
 
-		// Determine which sizes to use based on position
-		let sizesToUse: (keyof Media['sizes'])[];
-		if (position === 'thumbnail') {
-			sizesToUse = ['thumbnail', 'small'];
-		} else if (position === 'fullscreen') {
-			sizesToUse = ['large', 'xlarge'];
-		} else {
-			sizesToUse = ['small', 'medium', 'large'];
-		}
+        // Populate `sources` for srcset
+        if (media.sizes) {
+            for (const size of sizesToUse) {
+                const sizeData = media.sizes[size];
+                if (sizeData?.url && sizeData?.mimeType) {
+                    const format = sizeData.mimeType.split('/')[1]; // Extract format from MIME type
+                    if (format) {
+                        sources[format] = (sources[format] || '') + `${sizeData.url} ${sizeData.width}w, `;
+                    }
+                }
+            }
+        }
 
-		// Populate `sources` for srcset
-		if (media.sizes) {
-			for (const size of sizesToUse) {
-				const sizeData = media.sizes[size];
-				if (sizeData?.url && sizeData?.mimeType) {
-					const format = sizeData.mimeType.split('/')[1]; // Extract format from MIME type
-					if (format) {
-						sources[format] = (sources[format] || '') + `${sizeData.url} ${sizeData.width}w, `;
-					}
-				}
-			}
-		}
+        // Fallback image (use the smallest available size)
+        const fallbackSize = sizesToUse.find((size) => media.sizes[size]?.url) || 'thumbnail';
+        const fallbackImg = {
+            src: media.sizes[fallbackSize]?.url || media.url,
+            w: media.sizes[fallbackSize]?.width || media.width,
+            h: media.sizes[fallbackSize]?.height || media.height
+        };
 
-		// Fallback image (use the smallest available size)
-		const fallbackSize = sizesToUse.find((size) => media.sizes[size]?.url) || 'thumbnail';
-		const fallbackImg = {
-			src: media.sizes[fallbackSize]?.url || media.url,
-			w: media.sizes[fallbackSize]?.width || media.width,
-			h: media.sizes[fallbackSize]?.height || media.height
-		};
+        return { sources, img: fallbackImg };
+    }
 
-		return { sources, img: fallbackImg };
-	}
+    // ... (previous effect blocks remain the same)
 
-	// Classes and captions
-	$effect(() => {
-		containerClasses = [
-			'relative',
-			position === 'fullscreen' ? 'w-screen' : 'w-full',
-			enableGutter && position !== 'fullscreen' ? 'px-0' : '',
-			className
-		]
-			.filter(Boolean)
-			.join(' ');
-
-		captionClasses = [
-			'mt-2 text-sm text-gray-600',
-			position === 'fullscreen' ? 'px-4' : '',
-			captionClassName
-		]
-			.filter(Boolean)
-			.join(' ');
-	});
-
-	$effect(() => {
-		// Ensure media is defined
-		if (!media) {
-			console.error('Media object is undefined or null');
-		}
-	});
+    function getImageSrc(media: Media, position: MediaBlockProps['position']): string {
+        const srcObject = getSrcObject(media, position);
+        return srcObject?.img?.src || '';
+    }
 </script>
 
-<!-- <svelte:head>
-	<link
-		rel="preload"
-		as="image"
-		href={getPreloadSrc(media)}
-	/>
-</svelte:head> -->
-
 <div class={containerClasses}>
-	{#if media && getSrcObject(media, position)}
-		<Img
-			src={getSrcObject(media, position)}
-			loading="eager"
-			alt={media.alt || ''}
-			class={imgClassName}
-		/>
-	{:else}
-		<p class="text-red-500">Image data is missing or incomplete.</p>
-	{/if}
+    {#if media}
+        {#if !disableInnerContainer && position === 'fullscreen'}
+            <div class="relative mx-auto max-w-7xl">
+                <img
+                    src={getImageSrc(media, position)}
+                    loading="eager"
+                    alt={media.alt || ''}
+                    class={imgClassName}
+                />
+            </div>
+        {:else}
+            <div class="relative mb-4">
+                <img
+                    src={getImageSrc(media, position)}
+                    loading="eager"
+                    alt={media.alt || ''}
+                    class={imgClassName}
+                />
+            </div>
+        {/if}
+    {:else}
+        <p class="text-red-500">Image data is missing or incomplete.</p>
+    {/if}
 
-	{#if media?.caption && position !== 'thumbnail'}
-		<div class={captionClasses}>
-			{media.caption}
-		</div>
-	{/if}
+    {#if media?.caption && position !== 'thumbnail'}
+        <div class={captionClasses}>
+            {media.caption}
+        </div>
+    {/if}
 </div>
