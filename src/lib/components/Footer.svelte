@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PUBLIC_BSKY_HANDLE } from '$env/static/public';
+	import { PUBLIC_BSKY_HANDLE, PUBLIC_SHOW_PAYKIT_BUTTON } from '$env/static/public';
 	import LangSwitcher from './LangSwitcher.svelte';
 
 	interface NavItem {
@@ -81,6 +81,16 @@
 				{/each}
 			{:else}
 				<span class="text-gray-500">No links available</span>
+			{/if}
+			{#if PUBLIC_SHOW_PAYKIT_BUTTON}
+				<a
+					href="https://github.com/mtcberlin/Paykit"
+					target="_blank"
+					class="rounded-md px-0 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+					aria-label="Go to Paykit Github repository"
+				>
+					<img src="/Logo.png" width="30px" alt="Paykit Logo" class="dark:invert" />
+				</a>
 			{/if}
 
 			{#if PUBLIC_BSKY_HANDLE}

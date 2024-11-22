@@ -3,7 +3,7 @@ import MediaBlock from './MediaBlock.svelte';
 
 export default {
   component: MediaBlock,
-  title: 'Components/MediaBlock',
+  title: 'Blocks/MediaBlock',
   tags: ['autodocs'],
   argTypes: {
     position: {

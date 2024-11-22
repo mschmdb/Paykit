@@ -1,6 +1,8 @@
-# PAYKIT - SvelteKit Payload CMS Frontend
+# PayKit - Payload CMS SvelteKit Frontend
 
 This repository contains a SvelteKit application that serves as a frontend for Payload CMS v3. It provides dynamic site routes and a blog, creating a flexible and powerful web application.
+
+<center><img src="static/Logo.png" alt="PayKit Logo" width="250px"></center>
 
 > [!IMPORTANT]
 > Still work in progress, but if you know how to set up payload & how to do some changes in Svelte you should be good.
@@ -10,7 +12,9 @@ This repository contains a SvelteKit application that serves as a frontend for P
 - Built with SvelteKit for fast, efficient frontend development
 - Integrates seamlessly with Payload CMS v3 for content management
 - Dynamic site routes for flexible page creation
-- Blog functionality
+- Dynamically generated sitemap.xml
+- /admin route to revalidate ISR-cache (very much inspired by [vercel-sveltekit-news-demo](https://github.com/dummdidumm/vercel-sveltekit-news-demo))
+- Blog functionality (route /blog, not yet created via Payload)
 - Internationalization (i18n) support using [Paraglide](https://inlang.com/m/dxnzrydw/paraglide-sveltekit-i18n)
 - Type-safe API calls with [tRPC](trpc.io)
 - Incremental Static Regeneration ([ISR](https://vercel.com/docs/incremental-static-regeneration)) for improved performance
@@ -18,9 +22,9 @@ This repository contains a SvelteKit application that serves as a frontend for P
 
 ### Todos
 
-- still some work needs to go into SEO (i.e. Blog route is not covered pretty good)
-- automatic Sitemap.xml generation
-- automatic ISR Cache regeneration on Content changes from payload
+- optionally using payload local API
+- create the blog route dynamically
+- automatic ISR Cache regeneration on Content changes from payload (you can use /api/refresh with your collection hooks)
 
 ## Implementation Guide
 
@@ -51,13 +55,6 @@ pnpm install
 ```
 pnpm dev
 ```
- 
-
-
- 
-
-
- 
 
 ## Contributing
 
