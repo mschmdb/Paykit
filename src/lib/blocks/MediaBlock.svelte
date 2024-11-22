@@ -122,7 +122,6 @@
 		rel="preload"
 		as="image"
 		href={getPreloadSrc(media)}
-		fetchpriority="high"
 	/>
 </svelte:head>
 
