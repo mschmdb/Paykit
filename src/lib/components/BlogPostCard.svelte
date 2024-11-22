@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import * as m from '$lib/paraglide/messages.js';
 	import MediaBlock from '$lib/blocks/MediaBlock.svelte';
+	import { Skeleton } from "$lib/components/ui/skeleton";
 
 	let { post } = $props<{
 		slug: string;
@@ -20,6 +21,7 @@
 	}>();
 
 	let excerpt = $state(post.excerpt || '');
+	let isLoading = $state(true);
 
 	function generateExcerpt(content: any, maxLength: number = 150): string {
 		if (!content || !content.root || !content.root.children) return '';
@@ -42,10 +44,12 @@
 
 	onMount(() => {
 		excerpt = generateExcerpt(post.content);
+		isLoading = false;
 	});
 	$effect(() => {
 		post = post;
 		excerpt = generateExcerpt(post.content);
+		isLoading = false;
 	});
 
 	const formattedDate = post.publishedAt ? formatDate(post.publishedAt) : 'Date unknown';
@@ -81,13 +85,23 @@
 							</p>
 						{/if}
 					</div>
-					<div class="space-y-4">
-						<Card.Description
-							class="font-serif text-base font-extralight leading-relaxed text-black dark:text-white"
-						>
-							{excerpt}
-						</Card.Description>
-						<div class="pt-2">
+					<div class="space-y-4 min-h-40">
+						{#if isLoading}
+							<div class="space-y-2">
+								<Skeleton class="h-4 w-full" />
+								<Skeleton class="h-4 w-5/6" />
+								<Skeleton class="h-4 w-4/5" />
+								<Skeleton class="h-4 w-full" />
+								<Skeleton class="h-4 w-4/5" />
+							</div>
+						{:else}
+							<Card.Description
+								class="font-serif text-base font-extralight leading-relaxed text-black dark:text-white"
+							>
+								{excerpt}
+							</Card.Description>
+						{/if}
+						<div class="mt-2">
 							<span
 								class="group-hover:text-primary-dark text-sm font-medium text-primary transition-colors"
 							>
