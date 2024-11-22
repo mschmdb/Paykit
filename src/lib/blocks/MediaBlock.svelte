@@ -50,8 +50,15 @@
 		disableInnerContainer = false
 	}: MediaBlockProps = $props();
 
+
 	let containerClasses = $state('');
 	let captionClasses = $state('');
+
+	function getPreloadSrc(media: Media): string | null {
+	if (!media || !media.url) return null;
+	return media.url; // Use the main image URL for preloading
+}
+
 
 	// Generate `src` object for svelte-img
 	function getSrcObject(media: Media): any {
@@ -110,6 +117,15 @@
 		}
 	});
 </script>
+<svelte:head>
+	<link
+		rel="preload"
+		as="image"
+		href={getPreloadSrc(media)}
+		fetchpriority="high"
+	/>
+</svelte:head>
+
 
 <div class={containerClasses}>
 	{#if media && getSrcObject(media)}
