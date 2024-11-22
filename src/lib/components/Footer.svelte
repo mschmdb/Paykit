@@ -90,7 +90,7 @@
 					aria-label="Go to Paykit Github repository"
 				>
 					<img
-						src="/PayKitLogo.svg"
+						src="/img/PayKitLogo.svg"
 						alt="Paykit logo"
 						width="26"
 						height="26"
