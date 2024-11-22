@@ -89,7 +89,12 @@
 					class="rounded-md px-0 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
 					aria-label="Go to Paykit Github repository"
 				>
-					<img src="/Logo.png" width="30px" alt="Paykit Logo" class="dark:invert" />
+					<img
+						src="/PayKitLogo.svg"
+						alt="Paykit logo"
+						class="h-8 w-auto px-1 dark:invert"
+					/>
+
 				</a>
 			{/if}
 
