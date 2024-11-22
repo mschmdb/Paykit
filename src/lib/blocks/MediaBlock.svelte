@@ -50,26 +50,33 @@
 		disableInnerContainer = false
 	}: MediaBlockProps = $props();
 
-
 	let containerClasses = $state('');
 	let captionClasses = $state('');
 
 	function getPreloadSrc(media: Media): string | null {
-	if (!media || !media.url) return null;
-	return media.url; // Use the main image URL for preloading
-}
-
+		if (!media || !media.url) return null;
+		return media.url; // Use the main image URL for preloading
+	}
 
 	// Generate `src` object for svelte-img
-	function getSrcObject(media: Media): any {
+	function getSrcObject(media: Media, position: MediaBlockProps['position']): any {
 		if (!media) return null;
 
 		const sources: Record<string, string> = {};
 
+		// Determine which sizes to use based on position
+		let sizesToUse: (keyof Media['sizes'])[];
+		if (position === 'thumbnail') {
+			sizesToUse = ['thumbnail', 'small'];
+		} else if (position === 'fullscreen') {
+			sizesToUse = ['large', 'xlarge'];
+		} else {
+			sizesToUse = ['small', 'medium', 'large'];
+		}
+
 		// Populate `sources` for srcset
 		if (media.sizes) {
-			const availableSizes = ['thumbnail', 'small', 'medium', 'large', 'xlarge'] as const;
-			for (const size of availableSizes) {
+			for (const size of sizesToUse) {
 				const sizeData = media.sizes[size];
 				if (sizeData?.url && sizeData?.mimeType) {
 					const format = sizeData.mimeType.split('/')[1]; // Extract format from MIME type
@@ -80,11 +87,12 @@
 			}
 		}
 
-		// Fallback image
+		// Fallback image (use the smallest available size)
+		const fallbackSize = sizesToUse.find((size) => media.sizes[size]?.url) || 'thumbnail';
 		const fallbackImg = {
-			src: media.url,
-			w: media.width,
-			h: media.height
+			src: media.sizes[fallbackSize]?.url || media.url,
+			w: media.sizes[fallbackSize]?.width || media.width,
+			h: media.sizes[fallbackSize]?.height || media.height
 		};
 
 		return { sources, img: fallbackImg };
@@ -117,6 +125,7 @@
 		}
 	});
 </script>
+
 <!-- <svelte:head>
 	<link
 		rel="preload"
@@ -125,10 +134,14 @@
 	/>
 </svelte:head> -->
 
-
 <div class={containerClasses}>
-	{#if media && getSrcObject(media)}
-		<Img src={getSrcObject(media)} loading="eager" alt={media.alt || ''} class={imgClassName} />
+	{#if media && getSrcObject(media, position)}
+		<Img
+			src={getSrcObject(media, position)}
+			loading="eager"
+			alt={media.alt || ''}
+			class={imgClassName}
+		/>
 	{:else}
 		<p class="text-red-500">Image data is missing or incomplete.</p>
 	{/if}
