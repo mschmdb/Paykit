@@ -64,7 +64,7 @@
         if (position === 'thumbnail') {
             sizesToUse = ['thumbnail'];
         } else if (position === 'fullscreen') {
-            sizesToUse = ['large', 'xlarge'];
+            sizesToUse = ['xlarge'];
         } else {
             sizesToUse = ['small', 'medium', 'large', 'xlarge'];
         }
