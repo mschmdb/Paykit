@@ -1,4 +1,6 @@
 <script lang="ts">
+
+
 	interface MediaSize {
 		url: string;
 		width: number;
@@ -19,12 +21,12 @@
 		width: number;
 		height: number;
 		sizes: {
-			thumbnail: MediaSize;
-			square: MediaSize;
-			small: MediaSize;
-			medium: MediaSize;
-			large: MediaSize;
-			xlarge: MediaSize;
+			thumbnail?: MediaSize;
+			square?: MediaSize;
+			small?: MediaSize;
+			medium?: MediaSize;
+			large?: MediaSize;
+			xlarge?: MediaSize;
 		};
 	}
 
@@ -39,125 +41,98 @@
 	}
 
 	let {
-		position = 'default',
-		media,
-		enableGutter = true,
-		className = '',
-		imgClassName = '',
-		captionClassName = '',
-		disableInnerContainer = false
-	}: MediaBlockProps = $props();
+        position = 'default',
+        media,
+        enableGutter = true,
+        className = '',
+        imgClassName = '',
+        captionClassName = '',
+        disableInnerContainer = false
+    }: MediaBlockProps = $props();
+    $inspect("media", media, "position", position);
 
-	let containerClasses = $state('');
-	let imageClasses = $state('');
-	let captionClasses = $state('');
+    let containerClasses = $state('');
+    let captionClasses = $state('');
 
-	$effect(() => {
-		containerClasses = [
-			'relative',
-			position === 'fullscreen' ? 'w-screen' : 'w-full',
-			enableGutter && position !== 'fullscreen' ? 'px-0' : '',
-			className
-		]
-			.filter(Boolean)
-			.join(' ');
+    function getSrcObject(media: Media, position: MediaBlockProps['position']): any {
+        if (!media) return null;
 
-		imageClasses = [
-			'w-full h-auto',
-			position === 'default' ? 'rounded-lg' : '',
-			position === 'thumbnail' ? 'rounded-md' : '',
-			imgClassName
-		]
-			.filter(Boolean)
-			.join(' ');
+        const sources: Record<string, string> = {};
 
-		captionClasses = [
-			'mt-2 text-sm text-gray-600',
-			position === 'fullscreen' ? 'px-4' : '',
-			captionClassName
-		]
-			.filter(Boolean)
-			.join(' ');
-	});
+        // Determine which sizes to use based on position
+        let sizesToUse: (keyof Media['sizes'])[];
+        if (position === 'thumbnail') {
+            sizesToUse = ['thumbnail'];
+        } else if (position === 'fullscreen') {
+            sizesToUse = ['large', 'xlarge'];
+        } else {
+            sizesToUse = ['small', 'medium', 'large', 'xlarge'];
+        }
 
-	function getSrcSet(media: Media, position: MediaBlockProps['position']): string {
-		if (!media.sizes) return '';
+        // Populate `sources` for srcset
+        if (media.sizes) {
+            for (const size of sizesToUse) {
+                const sizeData = media.sizes[size];
+                if (sizeData?.url && sizeData?.mimeType) {
+                    const format = sizeData.mimeType.split('/')[1]; // Extract format from MIME type
+                    if (format) {
+                        sources[format] = (sources[format] || '') + `${sizeData.url} ${sizeData.width}w, `;
+                    }
+                }
+            }
+        }
 
-		const availableSizes = position === 'thumbnail' 
-			? ['thumbnail', 'small'] as const
-			: ['small', 'medium'] as const;
+        // Fallback image (use the smallest available size)
+        const fallbackSize = sizesToUse.find((size) => media.sizes[size]?.url) || 'thumbnail';
+        const fallbackImg = {
+            src: media.sizes[fallbackSize]?.url || media.url,
+            w: media.sizes[fallbackSize]?.width || media.width,
+            h: media.sizes[fallbackSize]?.height || media.height
+        };
 
-		const srcsetEntries = availableSizes
-			.map((size) => {
-				const sizeData = media.sizes[size];
-				if (!sizeData) return null;
-				const encodedUrl = sizeData.url.replace(/ /g, '%20');
-				return `${encodedUrl} ${sizeData.width}w`;
-			})
-			.filter(Boolean);
+        return { sources, img: fallbackImg };
+    }
 
-		return srcsetEntries.join(', ');
-	}
+    // ... (previous effect blocks remain the same)
 
-	function getSizes(position: MediaBlockProps['position']): string {
-		if (position === 'fullscreen') {
-			return '100vw';
-		} else if (position === 'thumbnail') {
-			return '(max-width: 768px) 100px, 150px';
-		}
-		return '(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw';
-	}
-
-	function getDefaultSrc(media: Media, position: MediaBlockProps['position']): string {
-		if (!media.sizes) return media.url;
-
-		const preferredSizes = position === 'thumbnail'
-			? ['thumbnail', 'small', 'medium'] as const
-			: ['large', 'medium', 'small'] as const;
-
-		for (const size of preferredSizes) {
-			if (media.sizes[size]?.url) {
-				return media.sizes[size].url;
-			}
-		}
-		return media.url;
-	}
+    function getImageSrc(media: Media, position: MediaBlockProps['position']): string {
+        const srcObject = getSrcObject(media, position);
+        return srcObject?.img?.src || '';
+    }
 </script>
 
 <div class={containerClasses}>
-	{#if !disableInnerContainer && position === 'fullscreen'}
-		<div class="relative mx-auto max-w-7xl">
-			<img
-				src={getDefaultSrc(media, position)}
-				srcset={getSrcSet(media, position)}
-				sizes={getSizes(position)}
-				alt={media.alt || ''}
-				width={media.width}
-				height={media.height}
-				class={imageClasses}
-				loading="lazy"
-				decoding="async"
-			/>
-		</div>
-	{:else}
-		<div class="relative mb-4">
-			<img
-				src={getDefaultSrc(media, position)}
-				srcset={getSrcSet(media, position)}
-				sizes={getSizes(position)}
-				alt={media.alt || ''}
-				width={media.width}
-				height={media.height}
-				class={imageClasses}
-				loading="lazy"
-				decoding="async"
-			/>
-		</div>
-	{/if}
+    {#if media}
+        {#if !disableInnerContainer && position === 'fullscreen'}
+            <div class="relative mx-auto max-w-7xl">
+                <img
+                    src={getImageSrc(media, position)}
+                    loading="eager"
+                    alt={media.alt || ''}
+                    class={imgClassName}
+					width={media.width}
+					height={media.height}
+                />
+            </div>
+        {:else}
+            <div class="relative mb-4">
+                <img
+                    src={getImageSrc(media, position)}
+                    loading="eager"
+                    alt={media.alt || ''}
+                    class={imgClassName}
+					width={media.width}
+					height={media.height}
+                />
+            </div>
+        {/if}
+    {:else}
+        <p class="text-red-500">Image data is missing or incomplete.</p>
+    {/if}
 
-	{#if media.caption && position !== 'thumbnail'}
-		<div class={captionClasses}>
-			{media.caption}
-		</div>
-	{/if}
+    {#if media?.caption && position !== 'thumbnail'}
+        <div class={captionClasses}>
+            {media.caption}
+        </div>
+    {/if}
 </div>

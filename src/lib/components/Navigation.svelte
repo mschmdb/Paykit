@@ -45,6 +45,14 @@
 		return item.link.url || '#';
 	}
 
+	function getAriaLabel(item: NavItem): string {
+		let label = item.link.label;
+		if (item.link.newTab) {
+			label += ' (opens in a new tab)';
+		}
+		return label;
+	}
+
 	onMount(() => {
 		const mediaQuery = window.matchMedia('(min-width: 640px)');
 		isLargeScreen = mediaQuery.matches;
@@ -70,7 +78,9 @@
 	<div class="mx-auto">
 		<div class="flex h-16 items-center justify-between">
 			<div class="flex flex-shrink-0 items-center">
-				<a href="/" class="font-sans font-bold text-4xl leading-none text-black dark:text-white">{PUBLIC_SITE_NAME}</a>
+				<a href="/" class="font-sans font-bold text-4xl leading-none text-black dark:text-white" aria-label="Go to homepage">
+					{PUBLIC_SITE_NAME}
+				</a>
 			</div>
 			<div class="hidden items-center space-x-4 sm:flex">
 				{#if header && header.navItems}
@@ -80,6 +90,7 @@
 							class="text-base transition-colors hover:text-foreground"
 							target={item.link.newTab ? "_blank" : undefined}
 							rel={item.link.newTab ? "noopener noreferrer" : undefined}
+							aria-label={getAriaLabel(item)}
 						>
 							{item.link.label}
 						</a>
@@ -92,7 +103,7 @@
 					<Moon
 						class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
 					/>
-					<span class="sr-only">{m.next_long_niklas_kiss()}</span>
+					<span class="sr-only">Toggle dark mode</span>
 				</Button>
 			</div>
 			<div class="flex items-center sm:hidden">
@@ -127,6 +138,7 @@
 							target={item.link.newTab ? "_blank" : undefined}
 							rel={item.link.newTab ? "noopener noreferrer" : undefined}
 							onclick={closeMenu}
+							aria-label={getAriaLabel(item)}
 						>
 							{item.link.label}
 						</a>
@@ -140,7 +152,7 @@
 						<Moon
 							class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
 						/>
-						<span class="sr-only">{m.next_long_niklas_kiss()}</span>
+						<span class="sr-only">Toggle dark mode</span>
 					</Button>
 				</div>
 			</div>

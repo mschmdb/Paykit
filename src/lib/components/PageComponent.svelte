@@ -2,7 +2,7 @@
 	import Content from '$lib/blocks/Content.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 	import MediaBlock from '$lib/blocks/MediaBlock.svelte';
-	import BlogPostCard from './BlogPostCard.svelte';
+	import BlogPostCard from './BlogRoll.svelte';
 	import { formatDate } from '$lib/utils/date';
 	import SEO from '$lib/components/SEO.svelte';
 	import { generateSEOData } from '$lib/utils/seo';

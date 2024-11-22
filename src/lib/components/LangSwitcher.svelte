@@ -14,7 +14,7 @@
 			href={i18n.route(currentPath)}
 			hreflang={lang}
 			aria-current={lang === languageTag() ? 'page' : undefined}
-			aria-label={m.suave_main_pug_trip()}
+			aria-label={m.suave_main_pug_trip()}{lang.toUpperCase()}
 			class="my-auto focus-visible:outline-none focus-visible:ring-2"
 		>
 			{lang.toUpperCase()}

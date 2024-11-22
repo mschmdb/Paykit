@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/svelte';
 import CodeBlock from './CodeBlock.svelte';
 
 const meta = {
-  title: 'Components/CodeBlock',
+  title: 'Blocks/CodeBlock',
   component: CodeBlock,
   tags: ['autodocs'],
   argTypes: {
