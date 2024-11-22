@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import * as m from '$lib/paraglide/messages.js';
 	import MediaBlock from '$lib/blocks/MediaBlock.svelte';
-	import { Skeleton } from "$lib/components/ui/skeleton";
+	import { Skeleton } from '$lib/components/ui/skeleton';
 
 	let { post } = $props<{
 		slug: string;
@@ -30,10 +30,16 @@
 		for (const child of content.root.children) {
 			if (child.type === 'paragraph' && child.children) {
 				for (const textNode of child.children) {
-					if (textNode.text) {
+					if (textNode.type === 'text') {
 						text += textNode.text + ' ';
-						if (text.length > maxLength) break;
+					} else if (textNode.type === 'link' && textNode.children) {
+						for (const linkChild of textNode.children) {
+							if (linkChild.type === 'text') {
+								text += linkChild.text + ' ';
+							}
+						}
 					}
+					if (text.length > maxLength) break;
 				}
 				if (text.length > maxLength) break;
 			}
@@ -85,7 +91,7 @@
 							</p>
 						{/if}
 					</div>
-					<div class="space-y-4 min-h-40">
+					<div class="min-h-40 space-y-4">
 						{#if isLoading}
 							<div class="space-y-2">
 								<Skeleton class="h-4 w-full" />
@@ -110,7 +116,7 @@
 							</span>
 						</div>
 					</div>
-					<div class="aspect-[4/3] overflow-hidden saturate-0">
+					<div class="aspect-[4/3] overflow-hidden">
 						{#if post.meta?.image}
 							<MediaBlock
 								position="thumbnail"
