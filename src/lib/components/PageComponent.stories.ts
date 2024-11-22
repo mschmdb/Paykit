@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
 import PageComponent from './PageComponent.svelte';
-import Content from '$lib/blocks/Content.svelte';
-import MediaBlock from '$lib/blocks/MediaBlock.svelte';
+
 
 const meta = {
   title: 'Components/PageComponent',
