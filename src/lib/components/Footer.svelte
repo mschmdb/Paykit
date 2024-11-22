@@ -92,7 +92,9 @@
 					<img
 						src="/PayKitLogo.svg"
 						alt="Paykit logo"
-						class="h-8 w-auto px-1 dark:invert"
+						width="26"
+						height="26"
+						class="h-7 w-auto dark:invert"
 					/>
 
 				</a>
