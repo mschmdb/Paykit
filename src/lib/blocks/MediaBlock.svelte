@@ -129,7 +129,7 @@
 
 <div class={containerClasses}>
 	{#if media && getSrcObject(media)}
-		<Img src={getSrcObject(media)} alt={media.alt || ''} class={imgClassName} />
+		<Img src={getSrcObject(media)} loading="eager" alt={media.alt || ''} class={imgClassName} />
 	{:else}
 		<p class="text-red-500">Image data is missing or incomplete.</p>
 	{/if}
