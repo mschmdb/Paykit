@@ -97,7 +97,9 @@
 			} else if (node.type === 'list') {
 				const listItems = node.children.map((item: any) => `<li class="list-item">${item.children.map(renderNode).join('')}</li>`).join('');
 				const listType = node.listType === 'number' ? 'ol' : 'ul';
-				return `<${listType} class="list-${listType === 'ol' ? 'decimal' : 'disc'} list-inside pl-4 mb-4">${listItems}</${listType}>`;
+
+				return `<${listType} class="list-${listType === 'ol' ? 'decimal' : 'disc'} pl-4 mb-4">${listItems}</${listType}>`;
+
 			} else if (node.type === 'block' && node.fields?.blockType === 'code') {
 				return `<div id="code-block-${node.fields.id}"></div>`;
 			}
