@@ -117,13 +117,13 @@
 		}
 	});
 </script>
-<svelte:head>
+<!-- <svelte:head>
 	<link
 		rel="preload"
 		as="image"
 		href={getPreloadSrc(media)}
 	/>
-</svelte:head>
+</svelte:head> -->
 
 
 <div class={containerClasses}>
