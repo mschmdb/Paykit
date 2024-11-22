@@ -155,6 +155,10 @@
 	
 }
 
+ul {
+    list-style: disc;
+}
+
 .shiki {
 	padding: 1rem;
 }
