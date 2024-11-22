@@ -110,6 +110,8 @@
                     loading="eager"
                     alt={media.alt || ''}
                     class={imgClassName}
+					width={media.width}
+					height={media.height}
                 />
             </div>
         {:else}
@@ -119,6 +121,8 @@
                     loading="eager"
                     alt={media.alt || ''}
                     class={imgClassName}
+					width={media.width}
+					height={media.height}
                 />
             </div>
         {/if}
