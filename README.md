@@ -2,7 +2,6 @@
 
 This repository contains a SvelteKit application that serves as a frontend for Payload CMS v3. It provides dynamic site routes and a blog, creating a flexible and powerful web application.
 
-<center><img src="static/Logo.png" alt="PayKit Logo" width="250px"></center>
 
 > [!IMPORTANT]
 > Still work in progress, but if you know how to set up payload & how to do some changes in Svelte you should be good.
@@ -39,7 +38,7 @@ To set up and run this project, follow these steps:
 2. Clone this repository and install dependencies:
 
 ```
-git clone https://github.com/mschmdb/Paykit
+git clone https://github.com/mtcberlin/Paykit
 cd Paykit
 pnpm install
 ```
