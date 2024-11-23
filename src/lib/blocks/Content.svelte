@@ -78,12 +78,16 @@
 				const tag = node.tag || 'h2';
 				return `<${tag} class="text-2xl font-sans font-bold mb-4">${content}</${tag}>`;
 			} else if (node.type === 'text') {
-				return node.format === 1 ? `<strong>${node.text}</strong>` : node.text;
+				let content = node.text;
+				if (node.format & 1) content = `<strong>${content}</strong>`;
+				if (node.format & 16)
+					content = `<code class="px-1 py-0.5 border bg-gray-100 dark:bg-gray-800 rounded text-sm font-mono">${content}</code>`;
+				return content;
 			} else if (node.type === 'link') {
 				const content = node.children.map(renderNode).join('');
 				let url = node.fields?.url || '';
 				let attrs = '';
-				
+
 				// Handle internal links
 				if (node.fields?.linkType === 'internal' && node.fields?.doc) {
 					const prefix = node.fields.doc.relationTo === 'posts' ? '/blog/' : '/';
@@ -92,14 +96,14 @@
 				} else if (node.fields?.newTab) {
 					attrs = 'target="_blank" rel="noopener noreferrer"';
 				}
-				
+
 				return `<a href="${url}" class="text-primary underline" ${attrs}>${content}</a>`;
 			} else if (node.type === 'list') {
-				const listItems = node.children.map((item: any) => `<li class="list-item">${item.children.map(renderNode).join('')}</li>`).join('');
+				const listItems = node.children
+					.map((item: any) => `<li class="mb-1">${item.children.map(renderNode).join('')}</li>`)
+					.join('');
 				const listType = node.listType === 'number' ? 'ol' : 'ul';
-
-				return `<${listType} class="list-${listType === 'ol' ? 'decimal' : 'disc'} pl-4 mb-4">${listItems}</${listType}>`;
-
+				return `<${listType} class="list-${listType === 'ol' ? 'decimal' : 'disc'} pl-5 mb-4">${listItems}</${listType}>`;
 			} else if (node.type === 'block' && node.fields?.blockType === 'code') {
 				return `<div id="code-block-${node.fields.id}"></div>`;
 			}
@@ -111,9 +115,9 @@
 
 	function getCodeBlocks(richText: any): any[] {
 		if (!richText?.root?.children) return [];
-		
-		return richText.root.children.filter((node: any) => 
-			node.type === 'block' && node.fields?.blockType === 'code'
+
+		return richText.root.children.filter(
+			(node: any) => node.type === 'block' && node.fields?.blockType === 'code'
 		);
 	}
 
@@ -126,7 +130,7 @@
 </script>
 
 <div class="mx-auto">
-	<div class="flex flex-wrap -mx-4 -my-4">
+	<div class="-mx-4 -my-4 flex flex-wrap">
 		{#each block.columns as column (column.id)}
 			<div class={`${sizeToClass[column.size]} px-4 py-4`}>
 				<div class="h-full">
@@ -140,13 +144,13 @@
 							</div>
 						{/each}
 					{/if}
-					
+
 					{#if column.enableLink && column.link?.url}
-						<a 
+						<a
 							href={column.link.url}
-							class="inline-block mt-4 text-primary hover:underline"
-							target={column.link.newTab ? "_blank" : undefined}
-							rel={column.link.newTab ? "noopener noreferrer" : undefined}
+							class="mt-4 inline-block text-primary hover:underline"
+							target={column.link.newTab ? '_blank' : undefined}
+							rel={column.link.newTab ? 'noopener noreferrer' : undefined}
 							on:click={(e) => handleLinkClick(e, column.link.url)}
 						>
 							{column.link.label || column.link.url}
